@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: #0a0a0f;
+  color: #e6e8ec;
+  min-height: 100%;
+}
+
+body {
+  background-image:
+    radial-gradient(1200px 600px at 80% -10%, rgba(124, 58, 237, 0.18), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgba(168, 85, 247, 0.10), transparent 70%);
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-purple-500/60 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-purple-gradient text-white shadow-glow-soft hover:shadow-glow;
+  }
+  .btn-secondary {
+    @apply btn bg-bg-elevated text-silver-bright border border-purple-700/30 hover:border-purple-500/60;
+  }
+  .btn-ghost {
+    @apply btn text-silver hover:text-white hover:bg-bg-elevated/60;
+  }
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-500;
+  }
+  .input {
+    @apply w-full rounded-md bg-bg-soft border border-purple-700/30 px-3 py-2 text-silver-bright placeholder:text-silver-muted focus:outline-none focus:ring-2 focus:ring-purple-500/60 focus:border-purple-500/60;
+  }
+  .card {
+    @apply rounded-xl border border-purple-800/30 bg-bg-card bg-card-gradient p-4 shadow-glow-soft;
+  }
+  .card-hover {
+    @apply transition hover:border-purple-500/60 hover:shadow-glow;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium;
+  }
+  .badge-purple {
+    @apply badge border-purple-500/40 bg-purple-500/10 text-purple-200;
+  }
+  .badge-silver {
+    @apply badge border-silver/40 bg-silver/10 text-silver-bright;
+  }
+  .badge-warning {
+    @apply badge border-yellow-500/40 bg-yellow-500/10 text-yellow-200;
+  }
+  .badge-success {
+    @apply badge border-emerald-500/40 bg-emerald-500/10 text-emerald-200;
+  }
+  .badge-danger {
+    @apply badge border-red-500/40 bg-red-500/10 text-red-200;
+  }
+  .badge-neutral {
+    @apply badge border-zinc-500/30 bg-zinc-500/10 text-zinc-200;
+  }
+  .section-title {
+    @apply text-xl md:text-2xl font-semibold text-silver-bright tracking-tight;
+  }
+  .muted {
+    @apply text-silver-muted;
+  }
+  .link {
+    @apply text-purple-300 hover:text-purple-200 underline underline-offset-4;
+  }
+  .table {
+    @apply w-full text-sm;
+  }
+  .table th {
+    @apply text-left text-silver-muted font-medium border-b border-purple-800/30 px-3 py-2;
+  }
+  .table td {
+    @apply border-b border-purple-800/20 px-3 py-2 align-top;
+  }
+}
+
+[dir="rtl"] .ltr-only {
+  display: none;
+}
+[dir="ltr"] .rtl-only {
+  display: none;
+}
