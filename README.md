@@ -136,15 +136,12 @@ PAYPAL_CLIENT_ID=""
 PAYPAL_CLIENT_SECRET=""
 PAYPAL_ENV="sandbox"              # "sandbox" or "live"
 
-# --- Optional: Paymob (Middle East / regional gateway) ---
-PAYMOB_API_KEY=""
-PAYMOB_INTEGRATION_ID=""
-PAYMOB_IFRAME_ID=""
-PAYMOB_HMAC=""
-PAYMOB_BASE_URL="https://accept.paymob.com"   # or https://ksa.paymob.com for KSA
+# --- Optional: MyFatoorah (Middle East regional gateway) ---
+MYFATOORAH_API_KEY=""
+MYFATOORAH_BASE_URL="https://apitest.myfatoorah.com"   # see README for live URLs per country
 ```
 
-> If you skip Stripe / PayPal / Paymob env vars, those payment methods will appear disabled at the API layer — manual payment methods (bank transfer / cash) keep working.
+> If you skip Stripe / PayPal / MyFatoorah env vars, those payment methods will appear disabled at the API layer — manual payment methods (bank transfer / cash) keep working.
 
 ### 4) Database — connect, migrate, seed
 
@@ -215,43 +212,51 @@ npx prisma studio    # inspect the DB visually
 5. The PayPal flow does **not** need a webhook in this MVP — the buyer is redirected back to `/api/payments/paypal/capture?orderId=...&token=...`, which captures the payment server-side and redirects to `/orders/success`.
 6. To go live: change `PAYPAL_ENV` to `live` and use live API credentials.
 
-### 🌍 Setting up Paymob (regional gateway)
+### 🌍 Setting up MyFatoorah (Middle East regional gateway)
 
-Paymob is the recommended option for buyers in the Middle East — it supports Visa, Mastercard, Mada, Apple Pay, and several local mobile wallets in one integration.
+MyFatoorah is the recommended option for buyers in the Middle East (Jordan 🇯🇴, Saudi Arabia 🇸🇦, UAE 🇦🇪, Kuwait 🇰🇼, Egypt 🇪🇬, Oman, Qatar, Bahrain). It supports Visa, Mastercard, KNET, Mada, Apple Pay, STC Pay and other local wallets — all in one integration.
 
-1. Sign up at [https://paymob.com](https://paymob.com) and complete account verification (typically 1-2 business days).
-2. Get four values from the Paymob dashboard:
-   - **API Key** — *Settings → Account info → API Key*
-   - **Integration ID** — *Developers → Payment Integrations*. Pick the channel you want (e.g. "Online Card") and copy its ID.
-   - **Iframe ID** — *Developers → Iframes*. Create one and copy its ID.
-   - **HMAC** — *Settings → Account info → HMAC*. Used to verify callbacks.
-3. Set in `.env`:
+1. Sign up at [https://myfatoorah.com](https://myfatoorah.com) (free, no monthly fees).
+2. Get your **API Key** from the portal: *Profile → API Keys*. Copy the long token.
+3. Choose the right base URL for your country / environment:
+   | Environment | Base URL |
+   |-------------|----------|
+   | **Sandbox / test (any country)** | `https://apitest.myfatoorah.com` |
+   | Live - Kuwait | `https://api.myfatoorah.com` |
+   | Live - Jordan | `https://api-jo.myfatoorah.com` |
+   | Live - Saudi Arabia | `https://api-sa.myfatoorah.com` |
+   | Live - UAE | `https://api-ae.myfatoorah.com` |
+   | Live - Egypt | `https://api-eg.myfatoorah.com` |
+4. Set in `.env`:
    ```env
-   PAYMOB_API_KEY="..."
-   PAYMOB_INTEGRATION_ID="..."
-   PAYMOB_IFRAME_ID="..."
-   PAYMOB_HMAC="..."
-   PAYMOB_BASE_URL="https://accept.paymob.com"   # or https://ksa.paymob.com for KSA
+   MYFATOORAH_API_KEY="..."
+   MYFATOORAH_BASE_URL="https://apitest.myfatoorah.com"
    ```
-4. **Configure callbacks** — in *Developers → Payment Integrations → your integration → URLs* set both:
-   - **Transaction processed callback** (server webhook): `https://<your-domain>/api/payments/paymob/callback`
-   - **Transaction response callback** (browser redirect): `https://<your-domain>/api/payments/paymob/callback`
-5. The flow: buyer submits the buy form → server creates a Paymob order + payment key → returns the iframe URL → the user pays → Paymob redirects back to `/api/payments/paymob/callback` which verifies the HMAC, fulfills the order, and forwards the user to `/orders/success`.
-6. **Test mode**: while your account is in sandbox/test mode, use the test cards Paymob provides in the dashboard.
+5. **No callback configuration needed** in the MyFatoorah dashboard — the callback URL is set per-invoice from our server.
+6. The flow:
+   - Buyer submits the buy form → server creates a hosted invoice → returns the payment URL → the user is redirected to MyFatoorah's secure page.
+   - After payment, MyFatoorah redirects back to `/api/payments/myfatoorah/callback?orderId=...&paymentId=...`.
+   - Our server **verifies the actual payment status via the MyFatoorah API** (never trusts query parameters), then fulfills or cancels the order.
+7. **Sandbox test cards** (work with `apitest.myfatoorah.com`):
+   - **Visa**: `4005 5500 0000 0001`, expiry `05/2026`, CVV `123`
+   - **Mastercard**: `5123 4500 0000 0008`, expiry `05/2026`, CVV `100`
+   - **KNET**: any card number that's 16 digits, OTP `1234`
+   - Full list in [MyFatoorah test cards docs](https://myfatoorah.readme.io/docs/test-cards).
+8. To go live: switch `MYFATOORAH_BASE_URL` to your country's live URL and use the **live API key** from the live portal (the test and live portals are separate accounts).
 
 ### 🛠 Configuring payment methods
 
 After seeding, five payment methods exist by default:
 
-| Key            | Provider | Notes                                         |
-|----------------|----------|-----------------------------------------------|
-| `stripe_card`  | STRIPE   | Real card payment via Stripe                  |
-| `paypal`       | PAYPAL   | Real PayPal checkout (cards via PayPal too)   |
-| `paymob_card`  | PAYMOB   | Card / Mada / wallets via Paymob (Middle East)|
-| `bank_transfer`| MANUAL   | Admin verifies offline                        |
-| `manual_cash`  | MANUAL   | In-person settlement                          |
+| Key             | Provider    | Notes                                             |
+|-----------------|-------------|---------------------------------------------------|
+| `stripe_card`   | STRIPE      | Real card payment via Stripe                      |
+| `paypal`        | PAYPAL      | Real PayPal checkout (cards via PayPal too)       |
+| `myfatoorah`    | MYFATOORAH  | Card / KNET / Mada / wallets (Middle East)        |
+| `bank_transfer` | MANUAL      | Admin verifies offline                            |
+| `manual_cash`   | MANUAL      | In-person settlement                              |
 
-Toggle their enabled status and provider from `/admin/payment-methods`.
+Toggle their enabled status from `/admin/payment-methods`.
 
 ---
 

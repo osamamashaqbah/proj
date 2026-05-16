@@ -4,7 +4,10 @@ import { fail, handleError, ok } from "@/lib/api";
 import { getCurrentUser, requireUser } from "@/lib/rbac";
 import { buildCheckoutUrls, getStripe, stripeConfigured } from "@/lib/stripe";
 import { createPaypalOrder, paypalConfigured } from "@/lib/paypal";
-import { createPaymobCheckout, paymobConfigured } from "@/lib/paymob";
+import {
+  createMyFatoorahInvoice,
+  myFatoorahConfigured,
+} from "@/lib/myfatoorah";
 
 const Body = z
   .object({
@@ -58,7 +61,7 @@ export async function POST(req: Request) {
     }
 
     let methodKey: string | null = null;
-    let provider: "STRIPE" | "PAYPAL" | "PAYMOB" | "MANUAL" = "MANUAL";
+    let provider: "STRIPE" | "PAYPAL" | "MYFATOORAH" | "MANUAL" = "MANUAL";
     if (body.paymentMethod) {
       const pm = await prisma.paymentMethodSetting.findUnique({ where: { key: body.paymentMethod } });
       if (!pm || !pm.enabled) return fail("Payment method unavailable", 400);
@@ -77,8 +80,8 @@ export async function POST(req: Request) {
     if (provider === "PAYPAL" && !paypalConfigured()) {
       return fail("PayPal not configured on server", 503);
     }
-    if (provider === "PAYMOB" && !paymobConfigured()) {
-      return fail("Paymob not configured on server", 503);
+    if (provider === "MYFATOORAH" && !myFatoorahConfigured()) {
+      return fail("MyFatoorah not configured on server", 503);
     }
 
     // Create the order in DB first (PENDING payment).
@@ -168,36 +171,19 @@ export async function POST(req: Request) {
         where: { orderId: order.id },
         data: { providerRef: pp.id },
       });
-    } else if (provider === "PAYMOB") {
-      // Paymob requires billing data. We use the buyer's email + name and
-      // fall back to placeholder values for the rest (Paymob accepts "NA").
-      const nameParts = (me!.name ?? me!.email ?? "User User").trim().split(/\s+/);
-      const firstName = nameParts[0] ?? "User";
-      const lastName = nameParts.slice(1).join(" ") || "User";
-      const checkout = await createPaymobCheckout({
+    } else if (provider === "MYFATOORAH") {
+      const invoice = await createMyFatoorahInvoice({
         orderId: order.id,
         amountCents: total,
         currency,
-        billing: {
-          email: me!.email ?? "noreply@example.com",
-          first_name: firstName,
-          last_name: lastName,
-          phone_number: "NA",
-          apartment: "NA",
-          floor: "NA",
-          street: "NA",
-          building: "NA",
-          shipping_method: "NA",
-          postal_code: "NA",
-          city: "NA",
-          country: "NA",
-          state: "NA",
-        },
+        customerName: me!.name ?? me!.email ?? "Customer",
+        customerEmail: me!.email ?? "noreply@example.com",
+        description: titleSnapshot,
       });
-      checkoutUrl = checkout.iframeUrl;
+      checkoutUrl = invoice.paymentUrl;
       await prisma.payment.update({
         where: { orderId: order.id },
-        data: { providerRef: String(checkout.paymobOrderId) },
+        data: { providerRef: String(invoice.invoiceId) },
       });
     } else {
       // Manual payment: optimistically reserve the item (legacy behaviour).
