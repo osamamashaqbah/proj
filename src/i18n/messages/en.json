@@ -1,0 +1,234 @@
+{
+  "common": {
+    "appName": "GameVault",
+    "tagline": "The dark marketplace for used games, accounts & gaming services.",
+    "search": "Search",
+    "searchPlaceholder": "Search games, accounts, services...",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "submit": "Submit",
+    "approve": "Approve",
+    "reject": "Reject",
+    "back": "Back",
+    "yes": "Yes",
+    "no": "No",
+    "price": "Price",
+    "status": "Status",
+    "language": "Language",
+    "english": "English",
+    "arabic": "العربية",
+    "logout": "Log out",
+    "login": "Log in",
+    "register": "Register",
+    "or": "or",
+    "actions": "Actions",
+    "all": "All",
+    "enabled": "Enabled",
+    "disabled": "Disabled"
+  },
+  "nav": {
+    "home": "Home",
+    "marketplace": "Marketplace",
+    "categories": "Categories",
+    "officialStore": "Official Store",
+    "guarantee": "Guarantee",
+    "paymentMethods": "Payment Methods",
+    "sell": "Sell Your Item",
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "employee": "Employee",
+    "profile": "Profile",
+    "myListings": "My Listings",
+    "orders": "Orders",
+    "support": "Support",
+    "terms": "Terms"
+  },
+  "home": {
+    "heroTitle": "Buy & sell gaming gear, safely.",
+    "heroSubtitle": "Used games, gaming accounts, subscriptions, digital items and services - all in one dark marketplace.",
+    "ctaBrowse": "Browse marketplace",
+    "ctaSell": "Start selling",
+    "featuredCategories": "Featured categories",
+    "featuredListings": "Featured listings",
+    "officialStoreTitle": "Sold by Platform",
+    "officialStoreSubtitle": "Curated products from our official store.",
+    "guaranteeTitle": "Buy with confidence",
+    "guaranteeSubtitle": "Pick a guarantee package and let us hold the funds in escrow.",
+    "complianceWarning": "Reselling gaming accounts, subscriptions or digital items may violate the rules of the original third-party platforms. By using this site you accept our terms."
+  },
+  "marketplace": {
+    "title": "Marketplace",
+    "filterCategory": "Category",
+    "filterAll": "All categories",
+    "noResults": "No listings match your filters.",
+    "soldBy": "Sold by",
+    "buyNow": "Buy now"
+  },
+  "categories": {
+    "title": "Categories",
+    "subtitle": "Browse all marketplace categories.",
+    "disabledNotice": "This category is currently disabled by the admin."
+  },
+  "product": {
+    "details": "Details",
+    "category": "Category",
+    "seller": "Seller",
+    "buyDirect": "Buy directly",
+    "buyWithGuarantee": "Buy with website guarantee",
+    "selectGuarantee": "Select guarantee package",
+    "officialBadge": "Official Store",
+    "soldByPlatform": "Sold by Platform",
+    "guaranteedBadge": "Guaranteed by Website",
+    "pendingBadge": "Pending review",
+    "rejectedBadge": "Rejected",
+    "soldBadge": "Sold",
+    "complianceWarning": "This category may include items whose resale violates third-party platform rules. Proceed at your own risk."
+  },
+  "sell": {
+    "title": "Sell your item",
+    "subtitle": "Create a listing. It will be reviewed by our team before going public.",
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "category": "Category",
+      "price": "Price (USD)",
+      "images": "Image URLs (one per line)"
+    },
+    "submit": "Submit for review",
+    "successTitle": "Listing submitted",
+    "successBody": "Your listing is pending review by our team."
+  },
+  "officialStore": {
+    "title": "Official Store",
+    "subtitle": "Products sold directly by the platform.",
+    "outOfStock": "Out of stock"
+  },
+  "guarantee": {
+    "title": "Website Guarantee",
+    "subtitle": "Buy peace of mind. We hold the funds in escrow until you confirm delivery.",
+    "feeLabel": "Fee",
+    "selectPackage": "Choose this package",
+    "howItWorks": "How it works",
+    "howItWorksBody": "1) Buyer pays into escrow. 2) Seller delivers the item. 3) Buyer confirms. 4) Funds are released to the seller. If something goes wrong, our team mediates the dispute.",
+    "tiers": {
+      "BASIC": "Basic",
+      "PREMIUM": "Premium",
+      "FULL": "Full Protection"
+    }
+  },
+  "auth": {
+    "loginTitle": "Welcome back",
+    "registerTitle": "Create your account",
+    "email": "Email",
+    "password": "Password",
+    "name": "Display name",
+    "confirmPassword": "Confirm password",
+    "loginGoogle": "Continue with Google",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "forgot": "Forgot your password?",
+    "resetTitle": "Reset password",
+    "sendReset": "Send reset link",
+    "newPassword": "New password",
+    "errors": {
+      "invalid": "Invalid email or password.",
+      "exists": "An account with this email already exists.",
+      "weak": "Password must be at least 8 characters and include a number.",
+      "mismatch": "Passwords do not match.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "dashboard": {
+    "user": {
+      "title": "My dashboard",
+      "myListings": "My listings",
+      "myOrders": "My orders",
+      "myProfile": "My profile",
+      "newListing": "New listing"
+    },
+    "employee": {
+      "title": "Employee dashboard",
+      "pendingListings": "Pending listings",
+      "tickets": "Support tickets",
+      "guaranteeRequests": "Guarantee requests"
+    },
+    "admin": {
+      "title": "Admin dashboard",
+      "stats": "Overview",
+      "users": "Users",
+      "roles": "Roles & permissions",
+      "categories": "Categories",
+      "listings": "Listings",
+      "store": "Official store",
+      "orders": "Orders",
+      "guaranteePackages": "Guarantee packages",
+      "guaranteeRequests": "Guarantee requests",
+      "paymentMethods": "Payment methods",
+      "createStaff": "Create employee/admin"
+    }
+  },
+  "orders": {
+    "title": "My orders",
+    "noOrders": "You have no orders yet.",
+    "guaranteeApplied": "Website guarantee applied",
+    "subtotal": "Subtotal",
+    "guaranteeFee": "Guarantee fee",
+    "total": "Total"
+  },
+  "myListings": {
+    "title": "My listings",
+    "noListings": "You haven't created any listings yet.",
+    "create": "Create listing"
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Manage your account info and language.",
+    "saved": "Profile updated"
+  },
+  "support": {
+    "title": "Support",
+    "subtitle": "Open a support ticket and our team will get back to you.",
+    "subject": "Subject",
+    "message": "Message",
+    "submit": "Open ticket",
+    "submitted": "Ticket submitted"
+  },
+  "payments": {
+    "title": "Payment methods",
+    "subtitle": "Choose how you want to pay or receive payments.",
+    "statusTitle": "Payment status",
+    "statusBody": "Payments may be PENDING, AUTHORIZED, CAPTURED, FAILED or REFUNDED. For escrow orders, status moves through IN_ESCROW until the buyer confirms delivery.",
+    "disclaimer": "Payment gateway integration is a placeholder for this MVP. Real card processing requires Stripe / PayPal / a regional gateway. Do not enter real card data.",
+    "adminToggleHint": "Admins can enable / disable methods from the admin dashboard."
+  },
+  "terms": {
+    "title": "Terms & Conditions",
+    "lastUpdated": "Last updated",
+    "complianceTitle": "Third-party compliance notice",
+    "complianceBody": "Selling, sharing or transferring gaming accounts, subscriptions, in-game items or other digital goods may violate the terms of service of the original platforms (e.g. Steam, PlayStation Network, Xbox, Riot, EA, etc.). Sellers are solely responsible for ensuring that what they list is allowed to be transferred. The platform may remove any listing that appears to violate third-party rules.",
+    "userRights": "User rights and responsibilities",
+    "guaranteeTerms": "Guarantee terms",
+    "paymentsTerms": "Payments",
+    "disputeTerms": "Disputes",
+    "contactTerms": "Contact us"
+  },
+  "badges": {
+    "official": "Official Store",
+    "guaranteed": "Guaranteed by Website",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "sold": "Sold",
+    "highRisk": "Compliance risk"
+  },
+  "validation": {
+    "required": "This field is required.",
+    "minLength": "Too short.",
+    "maxLength": "Too long.",
+    "invalidPrice": "Price must be a positive number.",
+    "invalidEmail": "Invalid email."
+  }
+}

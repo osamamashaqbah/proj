@@ -1,0 +1,234 @@
+{
+  "common": {
+    "appName": "GameVault",
+    "tagline": "السوق الداكن للألعاب المستعملة والحسابات وخدمات الألعاب.",
+    "search": "بحث",
+    "searchPlaceholder": "ابحث عن ألعاب، حسابات، خدمات...",
+    "loading": "جارٍ التحميل...",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "submit": "إرسال",
+    "approve": "اعتماد",
+    "reject": "رفض",
+    "back": "رجوع",
+    "yes": "نعم",
+    "no": "لا",
+    "price": "السعر",
+    "status": "الحالة",
+    "language": "اللغة",
+    "english": "English",
+    "arabic": "العربية",
+    "logout": "تسجيل الخروج",
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "or": "أو",
+    "actions": "إجراءات",
+    "all": "الكل",
+    "enabled": "مُفعّل",
+    "disabled": "مُعطّل"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "marketplace": "السوق",
+    "categories": "الفئات",
+    "officialStore": "المتجر الرسمي",
+    "guarantee": "الضمان",
+    "paymentMethods": "طرق الدفع",
+    "sell": "بِع منتجك",
+    "dashboard": "لوحتي",
+    "admin": "المسؤول",
+    "employee": "الموظف",
+    "profile": "الملف الشخصي",
+    "myListings": "إعلاناتي",
+    "orders": "طلباتي",
+    "support": "الدعم",
+    "terms": "الشروط"
+  },
+  "home": {
+    "heroTitle": "اشترِ وبِع معدات الألعاب بأمان.",
+    "heroSubtitle": "ألعاب مستعملة، حسابات، اشتراكات، عناصر رقمية وخدمات - في سوق واحد داكن.",
+    "ctaBrowse": "تصفّح السوق",
+    "ctaSell": "ابدأ البيع",
+    "featuredCategories": "فئات مميزة",
+    "featuredListings": "إعلانات مميزة",
+    "officialStoreTitle": "بيع مباشر من المنصة",
+    "officialStoreSubtitle": "منتجات مختارة من متجرنا الرسمي.",
+    "guaranteeTitle": "اشترِ بثقة",
+    "guaranteeSubtitle": "اختر باقة ضمان ودعنا نحجز المبلغ كوسيط.",
+    "complianceWarning": "إعادة بيع حسابات الألعاب أو الاشتراكات أو العناصر الرقمية قد ينتهك شروط المنصات الأصلية. باستخدامك للموقع فأنت توافق على شروطنا."
+  },
+  "marketplace": {
+    "title": "السوق",
+    "filterCategory": "الفئة",
+    "filterAll": "كل الفئات",
+    "noResults": "لا توجد إعلانات مطابقة.",
+    "soldBy": "البائع",
+    "buyNow": "اشترِ الآن"
+  },
+  "categories": {
+    "title": "الفئات",
+    "subtitle": "تصفّح كل فئات السوق.",
+    "disabledNotice": "هذه الفئة معطّلة من قِبَل المسؤول حالياً."
+  },
+  "product": {
+    "details": "التفاصيل",
+    "category": "الفئة",
+    "seller": "البائع",
+    "buyDirect": "شراء مباشر",
+    "buyWithGuarantee": "شراء مع ضمان الموقع",
+    "selectGuarantee": "اختر باقة الضمان",
+    "officialBadge": "المتجر الرسمي",
+    "soldByPlatform": "بيع مباشر من المنصة",
+    "guaranteedBadge": "مضمون من الموقع",
+    "pendingBadge": "بانتظار المراجعة",
+    "rejectedBadge": "مرفوض",
+    "soldBadge": "تم البيع",
+    "complianceWarning": "قد تتضمن هذه الفئة عناصر يخالف بيعها شروط المنصات الأخرى. استمر على مسؤوليتك."
+  },
+  "sell": {
+    "title": "بِع منتجك",
+    "subtitle": "أنشئ إعلانًا. سيتم مراجعته من قِبَل فريقنا قبل النشر.",
+    "fields": {
+      "title": "العنوان",
+      "description": "الوصف",
+      "category": "الفئة",
+      "price": "السعر (USD)",
+      "images": "روابط الصور (رابط لكل سطر)"
+    },
+    "submit": "إرسال للمراجعة",
+    "successTitle": "تم إرسال الإعلان",
+    "successBody": "إعلانك بانتظار المراجعة من فريقنا."
+  },
+  "officialStore": {
+    "title": "المتجر الرسمي",
+    "subtitle": "منتجات تباع مباشرة من المنصة.",
+    "outOfStock": "غير متوفر"
+  },
+  "guarantee": {
+    "title": "ضمان الموقع",
+    "subtitle": "اشترِ براحة بال. نحجز المبلغ كوسيط حتى تؤكد الاستلام.",
+    "feeLabel": "الرسوم",
+    "selectPackage": "اختر هذه الباقة",
+    "howItWorks": "كيف يعمل",
+    "howItWorksBody": "1) المشتري يدفع للحساب الوسيط. 2) البائع يسلّم. 3) المشتري يؤكد. 4) المبلغ يُحوَّل للبائع. عند وجود مشكلة فريقنا يتدخل.",
+    "tiers": {
+      "BASIC": "أساسي",
+      "PREMIUM": "متميز",
+      "FULL": "حماية كاملة"
+    }
+  },
+  "auth": {
+    "loginTitle": "أهلًا بعودتك",
+    "registerTitle": "أنشئ حسابك",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "name": "اسم العرض",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "loginGoogle": "المتابعة عبر Google",
+    "noAccount": "ليس لديك حساب؟",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "forgot": "نسيت كلمة المرور؟",
+    "resetTitle": "إعادة تعيين كلمة المرور",
+    "sendReset": "إرسال رابط الإعادة",
+    "newPassword": "كلمة المرور الجديدة",
+    "errors": {
+      "invalid": "البريد أو كلمة المرور غير صحيحة.",
+      "exists": "يوجد حساب بهذا البريد بالفعل.",
+      "weak": "كلمة المرور يجب 8 أحرف على الأقل وتشمل رقمًا.",
+      "mismatch": "كلمتا المرور غير متطابقتين.",
+      "generic": "حدث خطأ، حاول مرة أخرى."
+    }
+  },
+  "dashboard": {
+    "user": {
+      "title": "لوحتي",
+      "myListings": "إعلاناتي",
+      "myOrders": "طلباتي",
+      "myProfile": "ملفي",
+      "newListing": "إعلان جديد"
+    },
+    "employee": {
+      "title": "لوحة الموظف",
+      "pendingListings": "إعلانات بانتظار الموافقة",
+      "tickets": "تذاكر الدعم",
+      "guaranteeRequests": "طلبات الضمان"
+    },
+    "admin": {
+      "title": "لوحة المسؤول",
+      "stats": "نظرة عامة",
+      "users": "المستخدمون",
+      "roles": "الأدوار والصلاحيات",
+      "categories": "الفئات",
+      "listings": "الإعلانات",
+      "store": "المتجر الرسمي",
+      "orders": "الطلبات",
+      "guaranteePackages": "باقات الضمان",
+      "guaranteeRequests": "طلبات الضمان",
+      "paymentMethods": "طرق الدفع",
+      "createStaff": "إنشاء موظف/مسؤول"
+    }
+  },
+  "orders": {
+    "title": "طلباتي",
+    "noOrders": "ليس لديك طلبات بعد.",
+    "guaranteeApplied": "تم تطبيق ضمان الموقع",
+    "subtotal": "المجموع الفرعي",
+    "guaranteeFee": "رسوم الضمان",
+    "total": "المجموع"
+  },
+  "myListings": {
+    "title": "إعلاناتي",
+    "noListings": "لم تنشئ أي إعلان بعد.",
+    "create": "أنشئ إعلانًا"
+  },
+  "profile": {
+    "title": "الملف الشخصي",
+    "subtitle": "إدارة بيانات حسابك واللغة.",
+    "saved": "تم تحديث الملف"
+  },
+  "support": {
+    "title": "الدعم",
+    "subtitle": "افتح تذكرة دعم وسيتواصل فريقنا معك.",
+    "subject": "الموضوع",
+    "message": "الرسالة",
+    "submit": "افتح التذكرة",
+    "submitted": "تم إرسال التذكرة"
+  },
+  "payments": {
+    "title": "طرق الدفع",
+    "subtitle": "اختر طريقة الدفع أو الاستلام.",
+    "statusTitle": "حالة الدفع",
+    "statusBody": "حالات الدفع: PENDING, AUTHORIZED, CAPTURED, FAILED, REFUNDED. لطلبات الضمان تنتقل الحالة عبر IN_ESCROW حتى تأكيد الاستلام.",
+    "disclaimer": "تكامل بوابة الدفع وهمي في هذا الـ MVP. لمعالجة بطاقات حقيقية يلزم Stripe أو PayPal أو بوابة محلية. لا تُدخل بيانات بطاقة حقيقية.",
+    "adminToggleHint": "يمكن للمسؤولين تفعيل/تعطيل الطرق من لوحة الإدارة."
+  },
+  "terms": {
+    "title": "الشروط والأحكام",
+    "lastUpdated": "آخر تحديث",
+    "complianceTitle": "إشعار التزام الطرف الثالث",
+    "complianceBody": "بيع أو نقل حسابات الألعاب أو الاشتراكات أو العناصر داخل اللعبة قد يخالف شروط المنصات الأصلية (Steam, PSN, Xbox, Riot, EA, ...). البائع وحده مسؤول عن السماح بنقل ما يعرضه. للمنصة الحق بإزالة أي إعلان مخالف.",
+    "userRights": "حقوق ومسؤوليات المستخدم",
+    "guaranteeTerms": "شروط الضمان",
+    "paymentsTerms": "الدفعات",
+    "disputeTerms": "النزاعات",
+    "contactTerms": "تواصل معنا"
+  },
+  "badges": {
+    "official": "المتجر الرسمي",
+    "guaranteed": "مضمون من الموقع",
+    "pending": "بانتظار المراجعة",
+    "approved": "معتمد",
+    "rejected": "مرفوض",
+    "sold": "تم البيع",
+    "highRisk": "تنبيه التزام"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب.",
+    "minLength": "قصير جدًا.",
+    "maxLength": "طويل جدًا.",
+    "invalidPrice": "السعر يجب أن يكون موجبًا.",
+    "invalidEmail": "بريد غير صحيح."
+  }
+}
