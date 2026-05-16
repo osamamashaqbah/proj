@@ -20,8 +20,8 @@ export default async function EmployeeListingsPage() {
         <table className="table">
           <thead>
             <tr>
-              <th>Title</th>
-              <th>Seller</th>
+              <th>{t("admin.listings.headings.title")}</th>
+              <th>{t("admin.listings.headings.seller")}</th>
               <th>{t("product.category")}</th>
               <th>{t("common.price")}</th>
               <th>{t("common.actions")}</th>
@@ -39,7 +39,14 @@ export default async function EmployeeListingsPage() {
                 <td>{l.seller.email}</td>
                 <td>{locale === "ar" ? l.category.nameAr : l.category.nameEn}</td>
                 <td>{formatPrice(l.priceCents, l.currency, locale)}</td>
-                <td><ListingActions id={l.id} approveLabel={t("common.approve")} rejectLabel={t("common.reject")} /></td>
+                <td>
+                  <ListingActions
+                    id={l.id}
+                    approveLabel={t("common.approve")}
+                    rejectLabel={t("common.reject")}
+                    reasonPrompt={t("common.rejectionReasonPrompt")}
+                  />
+                </td>
               </tr>
             ))}
             {listings.length === 0 && (

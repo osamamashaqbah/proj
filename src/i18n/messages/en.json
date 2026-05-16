@@ -27,7 +27,16 @@
     "actions": "Actions",
     "all": "All",
     "enabled": "Enabled",
-    "disabled": "Disabled"
+    "disabled": "Disabled",
+    "active": "Active",
+    "inactive": "Inactive",
+    "filter": "Filter",
+    "add": "Add",
+    "created": "Created.",
+    "deleteConfirm": "Are you sure you want to delete?",
+    "rejectionReasonPrompt": "Rejection reason?",
+    "anotherListing": "+ Add another listing",
+    "errorGeneric": "Something went wrong. Please try again."
   },
   "nav": {
     "home": "Home",
@@ -47,6 +56,7 @@
     "terms": "Terms"
   },
   "home": {
+    "heroBadge": "Online · Live Marketplace",
     "heroTitle": "Buy & sell gaming gear, safely.",
     "heroSubtitle": "Used games, gaming accounts, subscriptions, digital items and services - all in one dark marketplace.",
     "ctaBrowse": "Browse marketplace",
@@ -58,6 +68,10 @@
     "guaranteeTitle": "Buy with confidence",
     "guaranteeSubtitle": "Pick a guarantee package and let us hold the funds in escrow.",
     "complianceWarning": "Reselling gaming accounts, subscriptions or digital items may violate the rules of the original third-party platforms. By using this site you accept our terms."
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "contact": "Contact us"
   },
   "marketplace": {
     "title": "Marketplace",
@@ -85,7 +99,8 @@
     "pendingBadge": "Pending review",
     "rejectedBadge": "Rejected",
     "soldBadge": "Sold",
-    "complianceWarning": "This category may include items whose resale violates third-party platform rules. Proceed at your own risk."
+    "complianceWarning": "This category may include items whose resale violates third-party platform rules. Proceed at your own risk.",
+    "paymentMethod": "Payment method"
   },
   "sell": {
     "title": "Sell your item",
@@ -133,6 +148,8 @@
     "resetTitle": "Reset password",
     "sendReset": "Send reset link",
     "newPassword": "New password",
+    "forgotSent": "If that email exists, a reset link has been sent. (In dev mode, check the server console.)",
+    "passwordResetDone": "Password reset successfully. You can now log in.",
     "errors": {
       "invalid": "Invalid email or password.",
       "exists": "An account with this email already exists.",
@@ -167,7 +184,14 @@
       "guaranteePackages": "Guarantee packages",
       "guaranteeRequests": "Guarantee requests",
       "paymentMethods": "Payment methods",
-      "createStaff": "Create employee/admin"
+      "createStaff": "Create employee/admin",
+      "stats_total_users": "Total users",
+      "stats_total_listings": "Total listings",
+      "stats_pending": "Pending",
+      "stats_orders": "Orders",
+      "stats_guarantee_requests": "Guarantee requests",
+      "stats_store_products": "Store products",
+      "stats_tickets": "Tickets"
     }
   },
   "orders": {
@@ -176,7 +200,21 @@
     "guaranteeApplied": "Website guarantee applied",
     "subtotal": "Subtotal",
     "guaranteeFee": "Guarantee fee",
-    "total": "Total"
+    "total": "Total",
+    "status": {
+      "PENDING_PAYMENT": "Pending payment",
+      "PAID": "Paid",
+      "IN_ESCROW": "In escrow",
+      "DELIVERED": "Delivered",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled",
+      "REFUNDED": "Refunded",
+      "DISPUTED": "Disputed"
+    },
+    "source": {
+      "MARKETPLACE": "Marketplace",
+      "OFFICIAL_STORE": "Official store"
+    }
   },
   "myListings": {
     "title": "My listings",
@@ -194,15 +232,41 @@
     "subject": "Subject",
     "message": "Message",
     "submit": "Open ticket",
-    "submitted": "Ticket submitted"
+    "submitted": "Ticket submitted",
+    "myTickets": "My tickets",
+    "newTicket": "New ticket",
+    "viewConversation": "View conversation",
+    "openedOn": "Opened on",
+    "reply": "Reply",
+    "writeReply": "Write your reply...",
+    "send": "Send",
+    "noMessages": "No messages yet.",
+    "ticketStatus": {
+      "OPEN": "Open",
+      "IN_PROGRESS": "In progress",
+      "RESOLVED": "Resolved",
+      "CLOSED": "Closed"
+    },
+    "staffReply": "Staff",
+    "you": "You",
+    "closeTicket": "Close ticket",
+    "reopenTicket": "Reopen",
+    "markInProgress": "Mark in progress",
+    "markResolved": "Mark resolved",
+    "noTickets": "No tickets yet."
   },
   "payments": {
     "title": "Payment methods",
     "subtitle": "Choose how you want to pay or receive payments.",
     "statusTitle": "Payment status",
     "statusBody": "Payments may be PENDING, AUTHORIZED, CAPTURED, FAILED or REFUNDED. For escrow orders, status moves through IN_ESCROW until the buyer confirms delivery.",
-    "disclaimer": "Payment gateway integration is a placeholder for this MVP. Real card processing requires Stripe / PayPal / a regional gateway. Do not enter real card data.",
-    "adminToggleHint": "Admins can enable / disable methods from the admin dashboard."
+    "disclaimer": "Some payment methods (Stripe, PayPal) are real integrations and require API keys. Cash and bank transfer are manual and verified by an admin.",
+    "adminToggleHint": "Admins can enable / disable methods from the admin dashboard.",
+    "checkoutPending": "Redirecting to secure payment...",
+    "checkoutSuccess": "Payment successful! Your order is confirmed.",
+    "checkoutCancelled": "Payment cancelled. You can retry from your orders page.",
+    "stripeNeeded": "Stripe is not configured on the server. Please contact the admin.",
+    "paypalNeeded": "PayPal is not configured on the server. Please contact the admin."
   },
   "terms": {
     "title": "Terms & Conditions",
@@ -210,10 +274,15 @@
     "complianceTitle": "Third-party compliance notice",
     "complianceBody": "Selling, sharing or transferring gaming accounts, subscriptions, in-game items or other digital goods may violate the terms of service of the original platforms (e.g. Steam, PlayStation Network, Xbox, Riot, EA, etc.). Sellers are solely responsible for ensuring that what they list is allowed to be transferred. The platform may remove any listing that appears to violate third-party rules.",
     "userRights": "User rights and responsibilities",
+    "userRightsBody": "Users are responsible for the accuracy of their listings, the legality of their items in their jurisdiction, and any obligations to third-party platforms. The marketplace reserves the right to review, approve, reject, or remove any listing.",
     "guaranteeTerms": "Guarantee terms",
+    "guaranteeTermsBody": "The Website Guarantee places funds in escrow until the buyer confirms delivery. Disputes are mediated by our team. Refunds and releases are at the sole discretion of the platform per the chosen guarantee tier.",
     "paymentsTerms": "Payments",
+    "paymentsTermsBody": "Real card processing requires Stripe / PayPal / a regional gateway. Refunds, chargebacks and dispute timelines depend on the provider.",
     "disputeTerms": "Disputes",
-    "contactTerms": "Contact us"
+    "disputeTermsBody": "Disputes are filed via a support ticket. The team will review within the SLA of the chosen guarantee tier and may rule for refund, partial refund, or release of funds.",
+    "contactTerms": "Contact us",
+    "contactTermsBody": "For any questions, contact our support team via the support page."
   },
   "badges": {
     "official": "Official Store",
@@ -230,5 +299,135 @@
     "maxLength": "Too long.",
     "invalidPrice": "Price must be a positive number.",
     "invalidEmail": "Invalid email."
+  },
+  "admin": {
+    "categories": {
+      "headings": {
+        "slug": "Slug",
+        "en": "English name",
+        "ar": "Arabic name",
+        "kind": "Kind",
+        "risk": "Risk",
+        "enabled": "Enabled",
+        "actions": "Actions"
+      },
+      "form": {
+        "slug": "slug",
+        "nameEn": "English name",
+        "nameAr": "Arabic name",
+        "kind": "Kind",
+        "risk": "Compliance risk",
+        "add": "Add category"
+      }
+    },
+    "store": {
+      "headings": {
+        "title": "Title",
+        "stock": "Stock",
+        "active": "Active"
+      },
+      "form": {
+        "title": "Product title",
+        "price": "Price",
+        "stock": "Stock",
+        "description": "Description",
+        "images": "Image URLs (one per line)",
+        "submit": "Add product"
+      }
+    },
+    "users": {
+      "headings": {
+        "email": "Email",
+        "name": "Name",
+        "roles": "Roles",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "active": "Active",
+      "banned": "Banned",
+      "ban": "Ban",
+      "unban": "Unban"
+    },
+    "orders": {
+      "headings": {
+        "id": "ID",
+        "buyer": "Buyer",
+        "source": "Source",
+        "total": "Total",
+        "status": "Status"
+      }
+    },
+    "listings": {
+      "headings": {
+        "title": "Title",
+        "seller": "Seller"
+      }
+    },
+    "tickets": {
+      "headings": {
+        "subject": "Subject",
+        "author": "Author",
+        "status": "Status"
+      }
+    },
+    "guarantees": {
+      "headings": {
+        "order": "Order",
+        "buyer": "Buyer",
+        "package": "Package",
+        "fee": "Fee",
+        "status": "Status"
+      }
+    },
+    "payments": {
+      "headings": {
+        "key": "Key",
+        "labelEn": "English label",
+        "labelAr": "Arabic label",
+        "enabled": "Enabled"
+      }
+    },
+    "guaranteePackages": {
+      "active": "Active",
+      "feePercent": "Fee %",
+      "minFee": "Minimum fee (cents)",
+      "features": "Features (one per line)"
+    },
+    "staff": {
+      "form": {
+        "email": "Email",
+        "name": "Name",
+        "password": "Password",
+        "role": "Role",
+        "submit": "Create",
+        "createdMessage": "Account created."
+      }
+    },
+    "guaranteeActions": {
+      "holdEscrow": "Hold in escrow",
+      "release": "Release",
+      "refund": "Refund"
+    },
+    "ticketActions": {
+      "inProgress": "In progress",
+      "resolve": "Resolve"
+    },
+    "rolesPage": {
+      "saveTitle": "Save role permissions",
+      "system": "system role"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "subtitle": "Looks like that page doesn't exist.",
+    "goHome": "Back to home"
+  },
+  "kinds": {
+    "USED_GAMES": "Used games",
+    "ACCOUNTS": "Gaming accounts",
+    "SUBSCRIPTIONS": "Subscriptions",
+    "DIGITAL_ITEMS": "Digital items",
+    "SERVICES": "Gaming services",
+    "OTHER": "Other"
   }
 }

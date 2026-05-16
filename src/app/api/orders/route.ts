@@ -2,6 +2,8 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { fail, handleError, ok } from "@/lib/api";
 import { getCurrentUser, requireUser } from "@/lib/rbac";
+import { buildCheckoutUrls, getStripe, stripeConfigured } from "@/lib/stripe";
+import { createPaypalOrder, paypalConfigured } from "@/lib/paypal";
 
 const Body = z
   .object({
@@ -54,17 +56,28 @@ export async function POST(req: Request) {
       pkg = { id: p.id, feePercent: p.feePercent, minFeeCents: p.minFeeCents };
     }
 
-    let paymentMethodKey: string | null = null;
+    let methodKey: string | null = null;
+    let provider: "STRIPE" | "PAYPAL" | "MANUAL" = "MANUAL";
     if (body.paymentMethod) {
       const pm = await prisma.paymentMethodSetting.findUnique({ where: { key: body.paymentMethod } });
       if (!pm || !pm.enabled) return fail("Payment method unavailable", 400);
-      paymentMethodKey = pm.key;
+      methodKey = pm.key;
+      provider = pm.provider;
     }
 
     const subtotal = unitPriceCents;
     const fee = pkg ? Math.max(pkg.minFeeCents, Math.round((subtotal * pkg.feePercent) / 100)) : 0;
     const total = subtotal + fee;
 
+    // Pre-check: if a real provider is selected, ensure server keys exist.
+    if (provider === "STRIPE" && !stripeConfigured()) {
+      return fail("Stripe not configured on server", 503);
+    }
+    if (provider === "PAYPAL" && !paypalConfigured()) {
+      return fail("PayPal not configured on server", 503);
+    }
+
+    // Create the order in DB first (PENDING payment).
     const order = await prisma.order.create({
       data: {
         buyerId: me!.id,
@@ -73,8 +86,9 @@ export async function POST(req: Request) {
         guaranteeFeeCents: fee,
         totalCents: total,
         currency,
-        paymentMethod: paymentMethodKey ?? undefined,
-        status: pkg ? "IN_ESCROW" : "PENDING_PAYMENT",
+        paymentMethod: methodKey ?? undefined,
+        // For escrow orders we move to IN_ESCROW only after successful payment.
+        status: "PENDING_PAYMENT",
         items: {
           create: [
             {
@@ -90,7 +104,7 @@ export async function POST(req: Request) {
             amountCents: total,
             currency,
             status: "PENDING",
-            provider: paymentMethodKey ?? "placeholder",
+            provider: provider.toLowerCase(),
           },
         },
         guaranteeRequest: pkg
@@ -106,17 +120,75 @@ export async function POST(req: Request) {
       },
     });
 
-    if (storeProductId) {
-      await prisma.officialStoreProduct.update({
-        where: { id: storeProductId },
-        data: { stock: { decrement: 1 } },
+    // For real-money providers: create checkout session and return URL.
+    let checkoutUrl: string | null = null;
+
+    if (provider === "STRIPE") {
+      const stripe = getStripe()!;
+      const { success, cancel } = buildCheckoutUrls(order.id);
+      const session = await stripe.checkout.sessions.create({
+        mode: "payment",
+        success_url: success,
+        cancel_url: cancel,
+        client_reference_id: order.id,
+        customer_email: me!.email ?? undefined,
+        line_items: [
+          {
+            quantity: 1,
+            price_data: {
+              currency: currency.toLowerCase(),
+              unit_amount: total,
+              product_data: {
+                name: titleSnapshot,
+                description: pkg ? "Includes website guarantee fee" : undefined,
+              },
+            },
+          },
+        ],
+        metadata: { orderId: order.id, buyerId: me!.id },
       });
-    }
-    if (listingId) {
-      await prisma.listing.update({ where: { id: listingId }, data: { status: "SOLD" } });
+      checkoutUrl = session.url;
+      await prisma.payment.update({
+        where: { orderId: order.id },
+        data: { providerRef: session.id },
+      });
+    } else if (provider === "PAYPAL") {
+      const pp = await createPaypalOrder({
+        orderId: order.id,
+        amountCents: total,
+        currency,
+        description: titleSnapshot,
+      });
+      checkoutUrl = pp.approveUrl ?? null;
+      await prisma.payment.update({
+        where: { orderId: order.id },
+        data: { providerRef: pp.id },
+      });
+    } else {
+      // Manual payment: optimistically reserve the item (legacy behaviour).
+      if (storeProductId) {
+        await prisma.officialStoreProduct.update({
+          where: { id: storeProductId },
+          data: { stock: { decrement: 1 } },
+        });
+      }
+      if (listingId) {
+        await prisma.listing.update({ where: { id: listingId }, data: { status: "SOLD" } });
+      }
+      // For escrow with manual payments, move into IN_ESCROW (admin will verify and release).
+      if (pkg) {
+        await prisma.order.update({
+          where: { id: order.id },
+          data: { status: "IN_ESCROW" },
+        });
+        await prisma.guaranteeRequest.update({
+          where: { orderId: order.id },
+          data: { status: "HELD_IN_ESCROW" },
+        });
+      }
     }
 
-    return ok({ id: order.id });
+    return ok({ id: order.id, checkoutUrl });
   } catch (e) {
     return handleError(e);
   }

@@ -153,10 +153,10 @@ async function main() {
 
   console.log("Seeding payment methods...");
   const methods = [
-    { key: "bank_transfer", labelEn: "Bank Transfer", labelAr: "تحويل بنكي", description: "Manual bank transfer (admin verifies).", sortOrder: 1 },
-    { key: "card", labelEn: "Credit / Debit Card", labelAr: "بطاقة ائتمان/خصم", description: "Card payment (placeholder - integrate gateway later).", sortOrder: 2 },
-    { key: "wallet", labelEn: "Digital Wallet", labelAr: "محفظة رقمية", description: "Digital wallet (placeholder).", sortOrder: 3 },
-    { key: "manual_cash", labelEn: "Manual / Cash", labelAr: "نقدي يدوي", description: "In-person or manual cash settlement.", sortOrder: 4 },
+    { key: "stripe_card", labelEn: "Credit / Debit Card (Stripe)", labelAr: "بطاقة ائتمان/خصم (Stripe)", description: "Real card payment via Stripe Checkout.", sortOrder: 1, provider: "STRIPE" as const },
+    { key: "paypal", labelEn: "PayPal", labelAr: "PayPal", description: "Real PayPal checkout.", sortOrder: 2, provider: "PAYPAL" as const },
+    { key: "bank_transfer", labelEn: "Bank Transfer", labelAr: "تحويل بنكي", description: "Manual bank transfer (admin verifies).", sortOrder: 3, provider: "MANUAL" as const },
+    { key: "manual_cash", labelEn: "Manual / Cash", labelAr: "نقدي يدوي", description: "In-person or manual cash settlement.", sortOrder: 4, provider: "MANUAL" as const },
   ];
   for (const m of methods) {
     await prisma.paymentMethodSetting.upsert({
@@ -165,6 +165,10 @@ async function main() {
       create: { ...m, enabled: true },
     });
   }
+  // Remove obsolete keys from earlier seeds (only if present)
+  await prisma.paymentMethodSetting.deleteMany({
+    where: { key: { in: ["card", "wallet"] } },
+  });
 
   console.log("Seeding demo users...");
   const adminEmail = "admin@example.com";

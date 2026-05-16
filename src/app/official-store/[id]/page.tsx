@@ -24,12 +24,12 @@ export default async function StoreProductPage({ params }: { params: { id: strin
   return (
     <div className="grid md:grid-cols-2 gap-8">
       <div className="card">
-        <div className="aspect-[4/3] w-full overflow-hidden rounded-lg bg-bg-elevated">
+        <div className="aspect-[4/3] w-full overflow-hidden rounded-lg bg-bg-elevated border border-neon-violet/30">
           {product.images?.[0] ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={product.images[0]} alt={product.title} className="h-full w-full object-cover" />
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-4xl">🎮</div>
+            <div className="flex h-full w-full items-center justify-center text-5xl">🎮</div>
           )}
         </div>
       </div>
@@ -39,7 +39,7 @@ export default async function StoreProductPage({ params }: { params: { id: strin
           <span className="badge-purple">{t("product.soldByPlatform")}</span>
         </div>
         <h1 className="text-3xl font-bold text-silver-bright">{product.title}</h1>
-        <div className="text-purple-300 text-2xl font-semibold">
+        <div className="text-3xl font-display font-bold bg-gradient-to-r from-neon-pink to-neon-cyan bg-clip-text text-transparent">
           {formatPrice(product.priceCents, product.currency, locale)}
         </div>
         <div className="text-sm muted">
@@ -62,6 +62,8 @@ export default async function StoreProductPage({ params }: { params: { id: strin
             }))}
             locale={locale}
             label={t("marketplace.buyNow")}
+            paymentLabel={t("product.paymentMethod")}
+            redirecting={t("payments.checkoutPending")}
           />
         ) : (
           <div className="card text-yellow-200">{t("officialStore.outOfStock")}</div>

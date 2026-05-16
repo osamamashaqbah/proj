@@ -34,6 +34,7 @@ export default async function SellPage() {
           successBody: t("sell.successBody"),
           required: t("validation.required"),
           riskWarning: t("product.complianceWarning"),
+          another: t("common.anotherListing"),
         }}
       />
     </div>

@@ -5,6 +5,15 @@ import { ListingCard } from "@/components/ui/ListingCard";
 
 export const dynamic = "force-dynamic";
 
+const CATEGORY_ICONS: Record<string, string> = {
+  USED_GAMES: "💿",
+  ACCOUNTS: "🎮",
+  SUBSCRIPTIONS: "🎟️",
+  DIGITAL_ITEMS: "💎",
+  SERVICES: "⚔️",
+  OTHER: "🕹️",
+};
+
 export default async function HomePage() {
   const t = getT();
   const locale = getLocale();
@@ -40,34 +49,58 @@ export default async function HomePage() {
   };
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-14">
       {/* Hero */}
-      <section className="card overflow-hidden relative">
-        <div className="absolute inset-0 bg-purple-gradient opacity-10 pointer-events-none" />
-        <div className="relative grid md:grid-cols-2 gap-6 items-center p-2 md:p-6">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-silver-bright">
-              {t("home.heroTitle")}
-            </h1>
-            <p className="mt-3 muted">{t("home.heroSubtitle")}</p>
-            <div className="mt-6 flex gap-3 flex-wrap">
-              <Link href="/marketplace" className="btn-primary">
-                {t("home.ctaBrowse")}
-              </Link>
-              <Link href="/sell" className="btn-secondary">
-                {t("home.ctaSell")}
-              </Link>
-            </div>
-          </div>
-          <div className="hidden md:block">
-            <div className="rounded-xl border border-purple-700/40 bg-bg-soft p-6 shadow-glow">
-              <div className="text-sm muted mb-2">{t("home.guaranteeTitle")}</div>
-              <div className="text-2xl font-semibold text-silver-bright">
-                {t("home.guaranteeSubtitle")}
+      <section className="arcade-frame">
+        <div className="relative overflow-hidden p-6 md:p-12">
+          {/* glowing decorations */}
+          <div className="absolute -top-20 -end-20 h-64 w-64 rounded-full bg-neon-pink/30 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-20 -start-20 h-64 w-64 rounded-full bg-neon-cyan/20 blur-3xl pointer-events-none" />
+
+          <div className="relative grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 mb-4 text-xs font-mono text-neon-cyan uppercase tracking-widest">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-neon-pink animate-pulse" />
+                {t("home.heroBadge")}
               </div>
-              <Link href="/guarantee" className="link mt-4 inline-block">
-                {t("nav.guarantee")} →
-              </Link>
+              <h1 className="neon-title text-4xl md:text-6xl leading-tight animate-pulse-neon">
+                {t("home.heroTitle")}
+              </h1>
+              <p className="mt-4 text-silver leading-relaxed text-base md:text-lg max-w-xl">
+                {t("home.heroSubtitle")}
+              </p>
+              <div className="mt-8 flex gap-3 flex-wrap">
+                <Link href="/marketplace" className="btn-primary">
+                  ▶ {t("home.ctaBrowse")}
+                </Link>
+                <Link href="/sell" className="btn-secondary">
+                  + {t("home.ctaSell")}
+                </Link>
+              </div>
+            </div>
+            <div className="hidden md:flex flex-col gap-3">
+              <div className="card-arcade">
+                <div className="flex items-center gap-2 text-neon-cyan text-xs uppercase tracking-widest font-mono mb-2">
+                  <span className="text-base">🛡️</span> {t("home.guaranteeTitle")}
+                </div>
+                <div className="text-xl font-semibold text-silver-bright leading-snug">
+                  {t("home.guaranteeSubtitle")}
+                </div>
+                <Link href="/guarantee" className="link mt-3 inline-block text-sm">
+                  {t("nav.guarantee")} →
+                </Link>
+              </div>
+              <div className="card-arcade">
+                <div className="flex items-center gap-2 text-neon-pink text-xs uppercase tracking-widest font-mono mb-2">
+                  <span className="text-base">⭐</span> {t("home.officialStoreTitle")}
+                </div>
+                <div className="text-xl font-semibold text-silver-bright leading-snug">
+                  {t("home.officialStoreSubtitle")}
+                </div>
+                <Link href="/official-store" className="link mt-3 inline-block text-sm">
+                  {t("nav.officialStore")} →
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -75,20 +108,30 @@ export default async function HomePage() {
 
       {/* Categories */}
       <section>
-        <h2 className="section-title mb-4">{t("home.featuredCategories")}</h2>
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="section-title flex items-center gap-2">
+            <span className="text-neon-pink">▌</span>
+            {t("home.featuredCategories")}
+          </h2>
+          <Link href="/categories" className="link text-sm">
+            {t("nav.categories")} →
+          </Link>
+        </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
           {categories.map((c) => (
             <Link
               key={c.id}
               href={`/marketplace?category=${c.slug}`}
-              className="card card-hover text-center"
+              className="card card-hover text-center group"
             >
-              <div className="text-2xl mb-1">🎮</div>
-              <div className="text-silver-bright font-medium">
+              <div className="text-3xl mb-2 transition group-hover:scale-110">
+                {CATEGORY_ICONS[c.kind] ?? "🎮"}
+              </div>
+              <div className="text-silver-bright font-semibold leading-tight">
                 {locale === "ar" ? c.nameAr : c.nameEn}
               </div>
               {c.riskWarning && (
-                <div className="mt-1 text-[10px] text-yellow-300">
+                <div className="mt-1.5 text-[10px] text-yellow-300 uppercase tracking-wider">
                   {t("badges.highRisk")}
                 </div>
               )}
@@ -99,9 +142,12 @@ export default async function HomePage() {
 
       {/* Featured listings */}
       <section>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="section-title">{t("home.featuredListings")}</h2>
-          <Link href="/marketplace" className="link">
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="section-title flex items-center gap-2">
+            <span className="text-neon-cyan">▌</span>
+            {t("home.featuredListings")}
+          </h2>
+          <Link href="/marketplace" className="link text-sm">
             {t("nav.marketplace")} →
           </Link>
         </div>
@@ -128,9 +174,12 @@ export default async function HomePage() {
 
       {/* Official store */}
       <section>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="section-title">{t("home.officialStoreTitle")}</h2>
-          <Link href="/official-store" className="link">
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="section-title flex items-center gap-2">
+            <span className="text-neon-pink">▌</span>
+            {t("home.officialStoreTitle")}
+          </h2>
+          <Link href="/official-store" className="link text-sm">
             {t("nav.officialStore")} →
           </Link>
         </div>

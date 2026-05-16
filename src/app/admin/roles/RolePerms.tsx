@@ -6,9 +6,13 @@ import { useState } from "react";
 export function RolePerms({
   role,
   allPerms,
+  saveLabel,
+  systemLabel,
 }: {
   role: { id: string; name: string; isSystem: boolean; perms: string[] };
   allPerms: string[];
+  saveLabel: string;
+  systemLabel: string;
 }) {
   const router = useRouter();
   const [perms, setPerms] = useState<string[]>(role.perms);
@@ -33,16 +37,16 @@ export function RolePerms({
     <div className="card">
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-silver-bright font-semibold">{role.name}</div>
-          {role.isSystem && <div className="text-xs muted">system role</div>}
+          <div className="text-silver-bright font-semibold font-display tracking-wider">{role.name}</div>
+          {role.isSystem && <div className="text-xs muted">{systemLabel}</div>}
         </div>
-        <button className="btn-primary" onClick={save} disabled={pending}>Save</button>
+        <button className="btn-primary" onClick={save} disabled={pending}>{saveLabel}</button>
       </div>
       <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1 text-sm">
         {allPerms.map((p) => (
-          <label key={p} className="flex items-center gap-2">
+          <label key={p} className="flex items-center gap-2 cursor-pointer hover:text-neon-pink transition">
             <input type="checkbox" checked={perms.includes(p)} onChange={() => toggle(p)} />
-            <span className="text-silver">{p}</span>
+            <span className="text-silver font-mono text-xs">{p}</span>
           </label>
         ))}
       </div>

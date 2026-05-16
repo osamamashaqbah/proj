@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { getT } from "@/i18n/server";
+import { AdminSidebar } from "./Sidebar";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const t = getT();
@@ -14,20 +14,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { href: "/admin/guarantee-packages", label: t("dashboard.admin.guaranteePackages") },
     { href: "/admin/guarantee-requests", label: t("dashboard.admin.guaranteeRequests") },
     { href: "/admin/payment-methods", label: t("dashboard.admin.paymentMethods") },
+    { href: "/admin/tickets", label: t("support.title") },
     { href: "/admin/staff", label: t("dashboard.admin.createStaff") },
   ];
   return (
-    <div className="grid md:grid-cols-[220px_1fr] gap-6">
-      <aside className="card h-fit">
-        <div className="text-silver-bright font-semibold mb-2">{t("dashboard.admin.title")}</div>
-        <nav className="flex flex-col gap-1 text-sm">
-          {items.map((i) => (
-            <Link key={i.href} href={i.href} className="rounded px-2 py-1 hover:bg-bg-elevated">
-              {i.label}
-            </Link>
-          ))}
-        </nav>
-      </aside>
+    <div className="grid md:grid-cols-[230px_1fr] gap-6">
+      <AdminSidebar items={items} title={t("dashboard.admin.title")} />
       <div>{children}</div>
     </div>
   );

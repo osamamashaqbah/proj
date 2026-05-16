@@ -32,33 +32,35 @@ export default async function MyListingsPage() {
         <Link href="/sell" className="btn-primary">{t("myListings.create")}</Link>
       </div>
       {listings.length === 0 && <div className="muted">{t("myListings.noListings")}</div>}
-      <div className="card overflow-x-auto">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>{t("product.category")}</th>
-              <th>{t("common.price")}</th>
-              <th>{t("common.status")}</th>
-              <th>{t("common.actions")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {listings.map((l) => (
-              <tr key={l.id}>
-                <td><Link className="link" href={`/product/${l.id}`}>{l.title}</Link></td>
-                <td>{locale === "ar" ? l.category.nameAr : l.category.nameEn}</td>
-                <td>{formatPrice(l.priceCents, l.currency, locale)}</td>
-                <td><StatusBadge status={l.status} labels={labels} /></td>
-                <td className="flex gap-2">
-                  <Link className="btn-ghost" href={`/my-listings/${l.id}/edit`}>{t("common.edit")}</Link>
-                  <DeleteListingButton id={l.id} label={t("common.delete")} />
-                </td>
+      {listings.length > 0 && (
+        <div className="card overflow-x-auto">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>{t("admin.listings.headings.title")}</th>
+                <th>{t("product.category")}</th>
+                <th>{t("common.price")}</th>
+                <th>{t("common.status")}</th>
+                <th>{t("common.actions")}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {listings.map((l) => (
+                <tr key={l.id}>
+                  <td><Link className="link" href={`/product/${l.id}`}>{l.title}</Link></td>
+                  <td>{locale === "ar" ? l.category.nameAr : l.category.nameEn}</td>
+                  <td>{formatPrice(l.priceCents, l.currency, locale)}</td>
+                  <td><StatusBadge status={l.status} labels={labels} /></td>
+                  <td className="flex gap-2">
+                    <Link className="btn-ghost" href={`/my-listings/${l.id}/edit`}>{t("common.edit")}</Link>
+                    <DeleteListingButton id={l.id} label={t("common.delete")} confirmLabel={t("common.deleteConfirm")} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

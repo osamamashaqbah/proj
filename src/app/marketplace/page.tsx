@@ -50,7 +50,9 @@ export default async function MarketplacePage({
     <div className="space-y-6">
       <div className="flex items-end justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="section-title">{t("marketplace.title")}</h1>
+          <h1 className="section-title flex items-center gap-2">
+            <span className="text-neon-pink">▌</span>{t("marketplace.title")}
+          </h1>
           <p className="muted text-sm mt-1">{t("home.heroSubtitle")}</p>
         </div>
         <form className="flex gap-2 flex-wrap">

@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 
-export function ForgotForm({ labels }: { labels: { email: string; submit: string } }) {
+export function ForgotForm({
+  labels,
+}: {
+  labels: { email: string; submit: string; sentMessage: string };
+}) {
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
   const [pending, setPending] = useState(false);
@@ -19,7 +23,7 @@ export function ForgotForm({ labels }: { labels: { email: string; submit: string
     setDone(true);
   };
 
-  if (done) return <div className="card">Check your email (or server console in dev) for the reset link.</div>;
+  if (done) return <div className="card">{labels.sentMessage}</div>;
 
   return (
     <form className="card space-y-3" onSubmit={onSubmit}>

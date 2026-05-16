@@ -26,11 +26,13 @@ export function BuyForm(props: {
     buyDirect: string;
     buyWithGuarantee: string;
     selectGuarantee: string;
+    paymentMethod: string;
     feeLabel: string;
     subtotal: string;
     guaranteeFee: string;
     total: string;
     submit: string;
+    redirecting: string;
     none: string;
   };
 }) {
@@ -60,23 +62,25 @@ export function BuyForm(props: {
       }),
     });
     const data = await res.json();
-    setSubmitting(false);
     if (!res.ok || !data.ok) {
+      setSubmitting(false);
       setErr(data.error ?? "Error");
       return;
     }
-    router.push(`/orders`);
+    // Redirect to gateway if returned, else go to orders
+    if (data.data?.checkoutUrl) {
+      window.location.href = data.data.checkoutUrl as string;
+      return;
+    }
+    setSubmitting(false);
+    router.push("/orders");
   };
 
   return (
     <div className="card space-y-3">
       <div>
         <label className="text-sm muted block mb-1">{props.t.selectGuarantee}</label>
-        <select
-          className="input"
-          value={pkgId}
-          onChange={(e) => setPkgId(e.target.value)}
-        >
+        <select className="input" value={pkgId} onChange={(e) => setPkgId(e.target.value)}>
           <option value="">{props.t.buyDirect}</option>
           {props.packages.map((p) => (
             <option key={p.id} value={p.id}>
@@ -86,7 +90,7 @@ export function BuyForm(props: {
         </select>
       </div>
       <div>
-        <label className="text-sm muted block mb-1">Payment</label>
+        <label className="text-sm muted block mb-1">{props.t.paymentMethod}</label>
         <select className="input" value={method} onChange={(e) => setMethod(e.target.value)}>
           {props.paymentMethods.map((m) => (
             <option key={m.key} value={m.key}>
@@ -104,14 +108,16 @@ export function BuyForm(props: {
           <span className="muted">{props.t.guaranteeFee}</span>
           <span>{formatPrice(fee, props.currency, props.locale)}</span>
         </div>
-        <div className="flex justify-between font-semibold text-silver-bright pt-1 border-t border-purple-800/30">
+        <div className="flex justify-between font-semibold text-silver-bright pt-1 border-t border-neon-violet/30">
           <span>{props.t.total}</span>
-          <span>{formatPrice(total, props.currency, props.locale)}</span>
+          <span className="bg-gradient-to-r from-neon-pink to-neon-cyan bg-clip-text text-transparent">
+            {formatPrice(total, props.currency, props.locale)}
+          </span>
         </div>
       </div>
       {err && <div className="text-red-300 text-sm">{err}</div>}
       <button onClick={submit} disabled={submitting} className="btn-primary w-full">
-        {submitting ? "..." : props.t.submit}
+        {submitting ? props.t.redirecting : props.t.submit}
       </button>
     </div>
   );

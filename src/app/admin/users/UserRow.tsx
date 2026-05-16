@@ -6,9 +6,11 @@ import { useState } from "react";
 export function UserRow({
   user,
   allRoles,
+  labels,
 }: {
   user: { id: string; email: string; name: string | null; banned: boolean; roles: string[] };
   allRoles: { id: string; name: string }[];
+  labels: { active: string; banned: string; ban: string; unban: string };
 }) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
@@ -52,7 +54,7 @@ export function UserRow({
               className={
                 "badge cursor-pointer " +
                 (roles.includes(r.name)
-                  ? "border-purple-500/40 bg-purple-500/10 text-purple-200"
+                  ? "border-neon-violet/50 bg-neon-violet/15 text-neon-violet"
                   : "border-zinc-500/30 bg-zinc-500/10 text-zinc-300")
               }
             >
@@ -61,10 +63,10 @@ export function UserRow({
           ))}
         </div>
       </td>
-      <td>{user.banned ? <span className="badge-danger">Banned</span> : <span className="badge-success">Active</span>}</td>
+      <td>{user.banned ? <span className="badge-danger">{labels.banned}</span> : <span className="badge-success">{labels.active}</span>}</td>
       <td>
         <button className="btn-secondary" disabled={pending} onClick={ban}>
-          {user.banned ? "Unban" : "Ban"}
+          {user.banned ? labels.unban : labels.ban}
         </button>
       </td>
     </tr>

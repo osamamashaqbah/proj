@@ -11,6 +11,14 @@ export default async function AdminUsersPage() {
     orderBy: { createdAt: "desc" },
   });
   const roles = await prisma.role.findMany({ orderBy: { name: "asc" } });
+
+  const labels = {
+    active: t("admin.users.active"),
+    banned: t("admin.users.banned"),
+    ban: t("admin.users.ban"),
+    unban: t("admin.users.unban"),
+  };
+
   return (
     <div className="space-y-4">
       <h1 className="section-title">{t("dashboard.admin.users")}</h1>
@@ -18,11 +26,11 @@ export default async function AdminUsersPage() {
         <table className="table">
           <thead>
             <tr>
-              <th>Email</th>
-              <th>Name</th>
-              <th>Roles</th>
-              <th>Status</th>
-              <th>{t("common.actions")}</th>
+              <th>{t("admin.users.headings.email")}</th>
+              <th>{t("admin.users.headings.name")}</th>
+              <th>{t("admin.users.headings.roles")}</th>
+              <th>{t("admin.users.headings.status")}</th>
+              <th>{t("admin.users.headings.actions")}</th>
             </tr>
           </thead>
           <tbody>
@@ -37,6 +45,7 @@ export default async function AdminUsersPage() {
                   roles: u.roles.map((r) => r.role.name),
                 }}
                 allRoles={roles.map((r) => ({ id: r.id, name: r.name }))}
+                labels={labels}
               />
             ))}
           </tbody>

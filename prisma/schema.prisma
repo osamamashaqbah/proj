@@ -31,6 +31,7 @@ model User {
   reviewsReceived   Review[]           @relation("ReviewTarget")
   ticketsOpened     SupportTicket[]    @relation("TicketAuthor")
   ticketsAssigned   SupportTicket[]    @relation("TicketAssignee")
+  ticketMessages    SupportTicketMessage[]
   passwordResets    PasswordResetToken[]
   auditLogs         AuditLog[]
 }
@@ -275,14 +276,21 @@ model Payment {
 
 // Admin toggle for which payment methods are visible to buyers
 model PaymentMethodSetting {
-  id          String   @id @default(cuid())
-  key         String   @unique // bank_transfer | card | wallet | manual_cash
+  id          String          @id @default(cuid())
+  key         String          @unique // bank_transfer | card | wallet | manual_cash | stripe_card | paypal
   labelEn     String
   labelAr     String
-  enabled     Boolean  @default(true)
-  description String?  @db.Text
-  sortOrder   Int      @default(0)
-  updatedAt   DateTime @updatedAt
+  enabled     Boolean         @default(true)
+  description String?         @db.Text
+  sortOrder   Int             @default(0)
+  provider    PaymentProvider @default(MANUAL)
+  updatedAt   DateTime        @updatedAt
+}
+
+enum PaymentProvider {
+  STRIPE
+  PAYPAL
+  MANUAL
 }
 
 // ----------------------------- GUARANTEE / ESCROW -----------------------------
@@ -368,6 +376,23 @@ model SupportTicket {
   updatedAt   DateTime     @updatedAt
   author      User         @relation("TicketAuthor", fields: [authorId], references: [id])
   assignee    User?        @relation("TicketAssignee", fields: [assigneeId], references: [id])
+  messages    SupportTicketMessage[]
+
+  @@index([status])
+  @@index([authorId])
+}
+
+model SupportTicketMessage {
+  id        String   @id @default(cuid())
+  ticketId  String
+  authorId  String
+  body      String   @db.Text
+  isStaff   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  ticket    SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author    User          @relation(fields: [authorId], references: [id])
+
+  @@index([ticketId])
 }
 
 // ----------------------------- AUDIT -----------------------------
