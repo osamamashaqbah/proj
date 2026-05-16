@@ -290,6 +290,7 @@ model PaymentMethodSetting {
 enum PaymentProvider {
   STRIPE
   PAYPAL
+  MYFATOORAH
   MANUAL
 }
 

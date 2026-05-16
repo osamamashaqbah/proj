@@ -135,9 +135,13 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=""
 PAYPAL_CLIENT_ID=""
 PAYPAL_CLIENT_SECRET=""
 PAYPAL_ENV="sandbox"              # "sandbox" or "live"
+
+# --- Optional: MyFatoorah (Middle East regional gateway) ---
+MYFATOORAH_API_KEY=""
+MYFATOORAH_BASE_URL="https://apitest.myfatoorah.com"   # see README for live URLs per country
 ```
 
-> If you skip Stripe/PayPal env vars, those payment methods will appear disabled at the API layer — manual payment methods (bank transfer / cash) keep working.
+> If you skip Stripe / PayPal / MyFatoorah env vars, those payment methods will appear disabled at the API layer — manual payment methods (bank transfer / cash) keep working.
 
 ### 4) Database — connect, migrate, seed
 
@@ -208,18 +212,51 @@ npx prisma studio    # inspect the DB visually
 5. The PayPal flow does **not** need a webhook in this MVP — the buyer is redirected back to `/api/payments/paypal/capture?orderId=...&token=...`, which captures the payment server-side and redirects to `/orders/success`.
 6. To go live: change `PAYPAL_ENV` to `live` and use live API credentials.
 
+### 🌍 Setting up MyFatoorah (Middle East regional gateway)
+
+MyFatoorah is the recommended option for buyers in the Middle East (Jordan 🇯🇴, Saudi Arabia 🇸🇦, UAE 🇦🇪, Kuwait 🇰🇼, Egypt 🇪🇬, Oman, Qatar, Bahrain). It supports Visa, Mastercard, KNET, Mada, Apple Pay, STC Pay and other local wallets — all in one integration.
+
+1. Sign up at [https://myfatoorah.com](https://myfatoorah.com) (free, no monthly fees).
+2. Get your **API Key** from the portal: *Profile → API Keys*. Copy the long token.
+3. Choose the right base URL for your country / environment:
+   | Environment | Base URL |
+   |-------------|----------|
+   | **Sandbox / test (any country)** | `https://apitest.myfatoorah.com` |
+   | Live - Kuwait | `https://api.myfatoorah.com` |
+   | Live - Jordan | `https://api-jo.myfatoorah.com` |
+   | Live - Saudi Arabia | `https://api-sa.myfatoorah.com` |
+   | Live - UAE | `https://api-ae.myfatoorah.com` |
+   | Live - Egypt | `https://api-eg.myfatoorah.com` |
+4. Set in `.env`:
+   ```env
+   MYFATOORAH_API_KEY="..."
+   MYFATOORAH_BASE_URL="https://apitest.myfatoorah.com"
+   ```
+5. **No callback configuration needed** in the MyFatoorah dashboard — the callback URL is set per-invoice from our server.
+6. The flow:
+   - Buyer submits the buy form → server creates a hosted invoice → returns the payment URL → the user is redirected to MyFatoorah's secure page.
+   - After payment, MyFatoorah redirects back to `/api/payments/myfatoorah/callback?orderId=...&paymentId=...`.
+   - Our server **verifies the actual payment status via the MyFatoorah API** (never trusts query parameters), then fulfills or cancels the order.
+7. **Sandbox test cards** (work with `apitest.myfatoorah.com`):
+   - **Visa**: `4005 5500 0000 0001`, expiry `05/2026`, CVV `123`
+   - **Mastercard**: `5123 4500 0000 0008`, expiry `05/2026`, CVV `100`
+   - **KNET**: any card number that's 16 digits, OTP `1234`
+   - Full list in [MyFatoorah test cards docs](https://myfatoorah.readme.io/docs/test-cards).
+8. To go live: switch `MYFATOORAH_BASE_URL` to your country's live URL and use the **live API key** from the live portal (the test and live portals are separate accounts).
+
 ### 🛠 Configuring payment methods
 
-After seeding, four payment methods exist by default:
+After seeding, five payment methods exist by default:
 
-| Key            | Provider | Notes                             |
-|----------------|----------|-----------------------------------|
-| `stripe_card`  | STRIPE   | Real card payment via Stripe      |
-| `paypal`       | PAYPAL   | Real PayPal checkout              |
-| `bank_transfer`| MANUAL   | Admin verifies offline            |
-| `manual_cash`  | MANUAL   | In-person settlement              |
+| Key             | Provider    | Notes                                             |
+|-----------------|-------------|---------------------------------------------------|
+| `stripe_card`   | STRIPE      | Real card payment via Stripe                      |
+| `paypal`        | PAYPAL      | Real PayPal checkout (cards via PayPal too)       |
+| `myfatoorah`    | MYFATOORAH  | Card / KNET / Mada / wallets (Middle East)        |
+| `bank_transfer` | MANUAL      | Admin verifies offline                            |
+| `manual_cash`   | MANUAL      | In-person settlement                              |
 
-Toggle their enabled status and provider from `/admin/payment-methods`.
+Toggle their enabled status from `/admin/payment-methods`.
 
 ---
 

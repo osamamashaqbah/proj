@@ -4,6 +4,10 @@ import { fail, handleError, ok } from "@/lib/api";
 import { getCurrentUser, requireUser } from "@/lib/rbac";
 import { buildCheckoutUrls, getStripe, stripeConfigured } from "@/lib/stripe";
 import { createPaypalOrder, paypalConfigured } from "@/lib/paypal";
+import {
+  createMyFatoorahInvoice,
+  myFatoorahConfigured,
+} from "@/lib/myfatoorah";
 
 const Body = z
   .object({
@@ -57,7 +61,7 @@ export async function POST(req: Request) {
     }
 
     let methodKey: string | null = null;
-    let provider: "STRIPE" | "PAYPAL" | "MANUAL" = "MANUAL";
+    let provider: "STRIPE" | "PAYPAL" | "MYFATOORAH" | "MANUAL" = "MANUAL";
     if (body.paymentMethod) {
       const pm = await prisma.paymentMethodSetting.findUnique({ where: { key: body.paymentMethod } });
       if (!pm || !pm.enabled) return fail("Payment method unavailable", 400);
@@ -75,6 +79,9 @@ export async function POST(req: Request) {
     }
     if (provider === "PAYPAL" && !paypalConfigured()) {
       return fail("PayPal not configured on server", 503);
+    }
+    if (provider === "MYFATOORAH" && !myFatoorahConfigured()) {
+      return fail("MyFatoorah not configured on server", 503);
     }
 
     // Create the order in DB first (PENDING payment).
@@ -163,6 +170,20 @@ export async function POST(req: Request) {
       await prisma.payment.update({
         where: { orderId: order.id },
         data: { providerRef: pp.id },
+      });
+    } else if (provider === "MYFATOORAH") {
+      const invoice = await createMyFatoorahInvoice({
+        orderId: order.id,
+        amountCents: total,
+        currency,
+        customerName: me!.name ?? me!.email ?? "Customer",
+        customerEmail: me!.email ?? "noreply@example.com",
+        description: titleSnapshot,
+      });
+      checkoutUrl = invoice.paymentUrl;
+      await prisma.payment.update({
+        where: { orderId: order.id },
+        data: { providerRef: String(invoice.invoiceId) },
       });
     } else {
       // Manual payment: optimistically reserve the item (legacy behaviour).

@@ -6,6 +6,7 @@ import { useState } from "react";
 const BADGES: Record<string, string> = {
   STRIPE: "badge-pink",
   PAYPAL: "badge-cyan",
+  MYFATOORAH: "badge-purple",
   MANUAL: "badge-silver",
 };
 

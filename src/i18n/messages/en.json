@@ -266,7 +266,8 @@
     "checkoutSuccess": "Payment successful! Your order is confirmed.",
     "checkoutCancelled": "Payment cancelled. You can retry from your orders page.",
     "stripeNeeded": "Stripe is not configured on the server. Please contact the admin.",
-    "paypalNeeded": "PayPal is not configured on the server. Please contact the admin."
+    "paypalNeeded": "PayPal is not configured on the server. Please contact the admin.",
+    "myFatoorahNeeded": "MyFatoorah is not configured on the server. Please contact the admin."
   },
   "terms": {
     "title": "Terms & Conditions",
