@@ -154,9 +154,10 @@ async function main() {
   console.log("Seeding payment methods...");
   const methods = [
     { key: "stripe_card", labelEn: "Credit / Debit Card (Stripe)", labelAr: "بطاقة ائتمان/خصم (Stripe)", description: "Real card payment via Stripe Checkout.", sortOrder: 1, provider: "STRIPE" as const },
-    { key: "paypal", labelEn: "PayPal", labelAr: "PayPal", description: "Real PayPal checkout.", sortOrder: 2, provider: "PAYPAL" as const },
-    { key: "bank_transfer", labelEn: "Bank Transfer", labelAr: "تحويل بنكي", description: "Manual bank transfer (admin verifies).", sortOrder: 3, provider: "MANUAL" as const },
-    { key: "manual_cash", labelEn: "Manual / Cash", labelAr: "نقدي يدوي", description: "In-person or manual cash settlement.", sortOrder: 4, provider: "MANUAL" as const },
+    { key: "paypal", labelEn: "PayPal", labelAr: "PayPal", description: "Real PayPal checkout. Cards are accepted via PayPal too.", sortOrder: 2, provider: "PAYPAL" as const },
+    { key: "paymob_card", labelEn: "Card / Wallet (Paymob)", labelAr: "بطاقة / محفظة (Paymob)", description: "Card and local wallets via Paymob — supports Visa, Mastercard, Mada, mobile wallets.", sortOrder: 3, provider: "PAYMOB" as const },
+    { key: "bank_transfer", labelEn: "Bank Transfer", labelAr: "تحويل بنكي", description: "Manual bank transfer (admin verifies).", sortOrder: 4, provider: "MANUAL" as const },
+    { key: "manual_cash", labelEn: "Manual / Cash", labelAr: "نقدي يدوي", description: "In-person or manual cash settlement.", sortOrder: 5, provider: "MANUAL" as const },
   ];
   for (const m of methods) {
     await prisma.paymentMethodSetting.upsert({

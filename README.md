@@ -135,9 +135,16 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=""
 PAYPAL_CLIENT_ID=""
 PAYPAL_CLIENT_SECRET=""
 PAYPAL_ENV="sandbox"              # "sandbox" or "live"
+
+# --- Optional: Paymob (Middle East / regional gateway) ---
+PAYMOB_API_KEY=""
+PAYMOB_INTEGRATION_ID=""
+PAYMOB_IFRAME_ID=""
+PAYMOB_HMAC=""
+PAYMOB_BASE_URL="https://accept.paymob.com"   # or https://ksa.paymob.com for KSA
 ```
 
-> If you skip Stripe/PayPal env vars, those payment methods will appear disabled at the API layer — manual payment methods (bank transfer / cash) keep working.
+> If you skip Stripe / PayPal / Paymob env vars, those payment methods will appear disabled at the API layer — manual payment methods (bank transfer / cash) keep working.
 
 ### 4) Database — connect, migrate, seed
 
@@ -208,16 +215,41 @@ npx prisma studio    # inspect the DB visually
 5. The PayPal flow does **not** need a webhook in this MVP — the buyer is redirected back to `/api/payments/paypal/capture?orderId=...&token=...`, which captures the payment server-side and redirects to `/orders/success`.
 6. To go live: change `PAYPAL_ENV` to `live` and use live API credentials.
 
+### 🌍 Setting up Paymob (regional gateway)
+
+Paymob is the recommended option for buyers in the Middle East — it supports Visa, Mastercard, Mada, Apple Pay, and several local mobile wallets in one integration.
+
+1. Sign up at [https://paymob.com](https://paymob.com) and complete account verification (typically 1-2 business days).
+2. Get four values from the Paymob dashboard:
+   - **API Key** — *Settings → Account info → API Key*
+   - **Integration ID** — *Developers → Payment Integrations*. Pick the channel you want (e.g. "Online Card") and copy its ID.
+   - **Iframe ID** — *Developers → Iframes*. Create one and copy its ID.
+   - **HMAC** — *Settings → Account info → HMAC*. Used to verify callbacks.
+3. Set in `.env`:
+   ```env
+   PAYMOB_API_KEY="..."
+   PAYMOB_INTEGRATION_ID="..."
+   PAYMOB_IFRAME_ID="..."
+   PAYMOB_HMAC="..."
+   PAYMOB_BASE_URL="https://accept.paymob.com"   # or https://ksa.paymob.com for KSA
+   ```
+4. **Configure callbacks** — in *Developers → Payment Integrations → your integration → URLs* set both:
+   - **Transaction processed callback** (server webhook): `https://<your-domain>/api/payments/paymob/callback`
+   - **Transaction response callback** (browser redirect): `https://<your-domain>/api/payments/paymob/callback`
+5. The flow: buyer submits the buy form → server creates a Paymob order + payment key → returns the iframe URL → the user pays → Paymob redirects back to `/api/payments/paymob/callback` which verifies the HMAC, fulfills the order, and forwards the user to `/orders/success`.
+6. **Test mode**: while your account is in sandbox/test mode, use the test cards Paymob provides in the dashboard.
+
 ### 🛠 Configuring payment methods
 
-After seeding, four payment methods exist by default:
+After seeding, five payment methods exist by default:
 
-| Key            | Provider | Notes                             |
-|----------------|----------|-----------------------------------|
-| `stripe_card`  | STRIPE   | Real card payment via Stripe      |
-| `paypal`       | PAYPAL   | Real PayPal checkout              |
-| `bank_transfer`| MANUAL   | Admin verifies offline            |
-| `manual_cash`  | MANUAL   | In-person settlement              |
+| Key            | Provider | Notes                                         |
+|----------------|----------|-----------------------------------------------|
+| `stripe_card`  | STRIPE   | Real card payment via Stripe                  |
+| `paypal`       | PAYPAL   | Real PayPal checkout (cards via PayPal too)   |
+| `paymob_card`  | PAYMOB   | Card / Mada / wallets via Paymob (Middle East)|
+| `bank_transfer`| MANUAL   | Admin verifies offline                        |
+| `manual_cash`  | MANUAL   | In-person settlement                          |
 
 Toggle their enabled status and provider from `/admin/payment-methods`.
 
