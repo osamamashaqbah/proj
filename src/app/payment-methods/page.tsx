@@ -6,12 +6,14 @@ export const dynamic = "force-dynamic";
 const PROVIDER_BADGE: Record<string, string> = {
   STRIPE: "badge-pink",
   PAYPAL: "badge-cyan",
+  PAYMOB: "badge-purple",
   MANUAL: "badge-silver",
 };
 
 const PROVIDER_ICON: Record<string, string> = {
   STRIPE: "💳",
   PAYPAL: "🅿️",
+  PAYMOB: "🌐",
   MANUAL: "🪙",
 };
 
