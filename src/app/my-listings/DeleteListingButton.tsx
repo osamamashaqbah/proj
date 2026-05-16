@@ -3,7 +3,15 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function DeleteListingButton({ id, label }: { id: string; label: string }) {
+export function DeleteListingButton({
+  id,
+  label,
+  confirmLabel,
+}: {
+  id: string;
+  label: string;
+  confirmLabel: string;
+}) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
   return (
@@ -11,7 +19,7 @@ export function DeleteListingButton({ id, label }: { id: string; label: string }
       className="btn-danger"
       disabled={pending}
       onClick={async () => {
-        if (!confirm("Delete?")) return;
+        if (!confirm(confirmLabel)) return;
         setPending(true);
         await fetch(`/api/listings/${id}`, { method: "DELETE" });
         setPending(false);

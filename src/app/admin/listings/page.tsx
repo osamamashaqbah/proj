@@ -16,26 +16,39 @@ export default async function AdminListingsPage({ searchParams }: { searchParams
     orderBy: { createdAt: "desc" },
     take: 100,
   });
+
+  const statusLabels: Record<string, string> = {
+    PENDING: t("badges.pending"),
+    APPROVED: t("badges.approved"),
+    REJECTED: t("badges.rejected"),
+    SOLD: t("badges.sold"),
+    REMOVED: t("badges.sold"),
+  };
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-2">
         <h1 className="section-title">{t("dashboard.admin.listings")}</h1>
         <form className="flex gap-2">
           <select name="status" defaultValue={searchParams.status ?? ""} className="input">
             <option value="">{t("common.all")}</option>
             {["PENDING", "APPROVED", "REJECTED", "SOLD", "REMOVED"].map((s) => (
-              <option key={s} value={s}>{s}</option>
+              <option key={s} value={s}>{statusLabels[s] ?? s}</option>
             ))}
           </select>
-          <button className="btn-secondary">Filter</button>
+          <button className="btn-secondary">{t("common.filter")}</button>
         </form>
       </div>
       <div className="card overflow-x-auto">
         <table className="table">
           <thead>
             <tr>
-              <th>Title</th><th>Seller</th><th>{t("product.category")}</th>
-              <th>{t("common.price")}</th><th>{t("common.status")}</th><th>{t("common.actions")}</th>
+              <th>{t("admin.listings.headings.title")}</th>
+              <th>{t("admin.listings.headings.seller")}</th>
+              <th>{t("product.category")}</th>
+              <th>{t("common.price")}</th>
+              <th>{t("common.status")}</th>
+              <th>{t("common.actions")}</th>
             </tr>
           </thead>
           <tbody>
@@ -45,10 +58,10 @@ export default async function AdminListingsPage({ searchParams }: { searchParams
                 <td>{l.seller.email}</td>
                 <td>{locale === "ar" ? l.category.nameAr : l.category.nameEn}</td>
                 <td>{formatPrice(l.priceCents, l.currency, locale)}</td>
-                <td><span className="badge-silver">{l.status}</span></td>
+                <td><span className="badge-silver">{statusLabels[l.status] ?? l.status}</span></td>
                 <td>
                   {l.status === "PENDING"
-                    ? <ListingActions id={l.id} approveLabel={t("common.approve")} rejectLabel={t("common.reject")} />
+                    ? <ListingActions id={l.id} approveLabel={t("common.approve")} rejectLabel={t("common.reject")} reasonPrompt={t("common.rejectionReasonPrompt")} />
                     : "—"}
                 </td>
               </tr>

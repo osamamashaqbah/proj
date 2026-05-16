@@ -3,7 +3,19 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function PaymentMethodRow({ m }: { m: any }) {
+const BADGES: Record<string, string> = {
+  STRIPE: "badge-pink",
+  PAYPAL: "badge-cyan",
+  MANUAL: "badge-silver",
+};
+
+export function PaymentMethodRow({
+  m,
+  labels,
+}: {
+  m: any;
+  labels: { enabled: string; disabled: string };
+}) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const toggle = async () => {
@@ -18,12 +30,13 @@ export function PaymentMethodRow({ m }: { m: any }) {
   };
   return (
     <tr>
-      <td>{m.key}</td>
+      <td className="font-mono text-xs text-silver-muted">{m.key}</td>
       <td>{m.labelEn}</td>
       <td>{m.labelAr}</td>
+      <td><span className={BADGES[m.provider] ?? "badge-silver"}>{m.provider}</span></td>
       <td>
         <button className={m.enabled ? "badge-success" : "badge-danger"} disabled={pending} onClick={toggle}>
-          {m.enabled ? "Enabled" : "Disabled"}
+          {m.enabled ? labels.enabled : labels.disabled}
         </button>
       </td>
     </tr>

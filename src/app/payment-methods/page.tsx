@@ -3,6 +3,18 @@ import { getLocale, getT } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
 
+const PROVIDER_BADGE: Record<string, string> = {
+  STRIPE: "badge-pink",
+  PAYPAL: "badge-cyan",
+  MANUAL: "badge-silver",
+};
+
+const PROVIDER_ICON: Record<string, string> = {
+  STRIPE: "💳",
+  PAYPAL: "🅿️",
+  MANUAL: "🪙",
+};
+
 export default async function PaymentMethodsPage() {
   const t = getT();
   const locale = getLocale();
@@ -19,15 +31,21 @@ export default async function PaymentMethodsPage() {
       <div className="grid sm:grid-cols-2 gap-4">
         {methods.map((m) => (
           <div key={m.key} className="card">
-            <div className="flex items-center justify-between">
-              <div className="text-silver-bright font-medium">
-                {locale === "ar" ? m.labelAr : m.labelEn}
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">{PROVIDER_ICON[m.provider] ?? "💠"}</span>
+                <div className="text-silver-bright font-semibold">
+                  {locale === "ar" ? m.labelAr : m.labelEn}
+                </div>
               </div>
-              <span className={m.enabled ? "badge-success" : "badge-danger"}>
-                {m.enabled ? t("common.enabled") : t("common.disabled")}
-              </span>
+              <div className="flex items-center gap-1">
+                <span className={PROVIDER_BADGE[m.provider] ?? "badge-silver"}>{m.provider}</span>
+                <span className={m.enabled ? "badge-success" : "badge-danger"}>
+                  {m.enabled ? t("common.enabled") : t("common.disabled")}
+                </span>
+              </div>
             </div>
-            {m.description && <p className="muted text-sm mt-2">{m.description}</p>}
+            {m.description && <p className="muted text-sm mt-3">{m.description}</p>}
           </div>
         ))}
       </div>

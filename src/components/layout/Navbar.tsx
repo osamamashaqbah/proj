@@ -22,30 +22,33 @@ export async function Navbar() {
   const dash = dashboardPathFor(user as any);
 
   return (
-    <header className="sticky top-0 z-40 backdrop-blur bg-bg/70 border-b border-purple-800/30">
-      <div className="mx-auto max-w-7xl px-4 h-14 flex items-center gap-4">
-        <Link href="/" className="font-bold text-lg tracking-tight">
-          <span className="bg-purple-gradient bg-clip-text text-transparent">
+    <header className="sticky top-0 z-40 backdrop-blur-md bg-bg/80 border-b border-neon-violet/30">
+      {/* glowing top line */}
+      <div className="h-[2px] w-full bg-gradient-to-r from-neon-pink via-neon-violet to-neon-cyan opacity-80 shadow-[0_0_12px_#a855f7]" />
+      <div className="mx-auto max-w-7xl px-4 h-16 flex items-center gap-4">
+        <Link href="/" className="font-display font-bold text-xl tracking-wider flex items-center gap-2 group">
+          <span className="text-2xl">🕹️</span>
+          <span className="neon-title text-2xl">
             {t("common.appName")}
           </span>
         </Link>
-        <nav className="hidden md:flex items-center gap-4 text-sm text-silver">
-          <Link className="hover:text-white" href="/marketplace">
+        <nav className="hidden md:flex items-center gap-1 ms-2">
+          <Link className="nav-link" href="/marketplace">
             {t("nav.marketplace")}
           </Link>
-          <Link className="hover:text-white" href="/categories">
+          <Link className="nav-link" href="/categories">
             {t("nav.categories")}
           </Link>
-          <Link className="hover:text-white" href="/official-store">
+          <Link className="nav-link" href="/official-store">
             {t("nav.officialStore")}
           </Link>
-          <Link className="hover:text-white" href="/guarantee">
+          <Link className="nav-link" href="/guarantee">
             {t("nav.guarantee")}
           </Link>
-          <Link className="hover:text-white" href="/payment-methods">
+          <Link className="nav-link" href="/payment-methods">
             {t("nav.paymentMethods")}
           </Link>
-          <Link className="hover:text-white" href="/sell">
+          <Link className="nav-link" href="/sell">
             {t("nav.sell")}
           </Link>
         </nav>
@@ -60,6 +63,7 @@ export async function Navbar() {
               profile: t("nav.profile"),
               orders: t("nav.orders"),
               myListings: t("nav.myListings"),
+              support: t("nav.support"),
               logout: t("common.logout"),
             }}
           />

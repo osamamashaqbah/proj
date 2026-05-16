@@ -17,18 +17,18 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <div className="flex items-center gap-1 rounded-md border border-purple-800/40 bg-bg-soft p-0.5 text-xs">
+    <div className="flex items-center gap-0.5 rounded-md border border-neon-violet/40 bg-bg-soft/80 p-0.5 text-xs font-bold">
       <button
         onClick={() => set("en")}
         disabled={pending}
-        className="px-2 py-1 rounded hover:bg-bg-elevated text-silver"
+        className="px-2.5 py-1 rounded hover:bg-neon-violet/20 text-silver hover:text-white transition uppercase tracking-wider"
       >
         EN
       </button>
       <button
         onClick={() => set("ar")}
         disabled={pending}
-        className="px-2 py-1 rounded hover:bg-bg-elevated text-silver"
+        className="px-2.5 py-1 rounded hover:bg-neon-pink/20 text-silver hover:text-white transition"
       >
         ع
       </button>

@@ -19,11 +19,11 @@ export function StatusBadge({
 }
 
 export function OfficialBadge({ label }: { label: string }) {
-  return <span className="badge-purple">★ {label}</span>;
+  return <span className="badge-pink">★ {label}</span>;
 }
 
 export function GuaranteedBadge({ label }: { label: string }) {
-  return <span className="badge-purple">✓ {label}</span>;
+  return <span className="badge-cyan">✓ {label}</span>;
 }
 
 export function ComplianceRiskBadge({ label }: { label: string }) {

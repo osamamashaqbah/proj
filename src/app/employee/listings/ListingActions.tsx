@@ -3,7 +3,17 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function ListingActions({ id, approveLabel, rejectLabel }: { id: string; approveLabel: string; rejectLabel: string }) {
+export function ListingActions({
+  id,
+  approveLabel,
+  rejectLabel,
+  reasonPrompt,
+}: {
+  id: string;
+  approveLabel: string;
+  rejectLabel: string;
+  reasonPrompt: string;
+}) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
 
@@ -11,7 +21,7 @@ export function ListingActions({ id, approveLabel, rejectLabel }: { id: string; 
     setPending(true);
     let reason: string | null = null;
     if (action === "reject") {
-      reason = prompt("Rejection reason?") ?? null;
+      reason = prompt(reasonPrompt) ?? null;
       if (!reason) {
         setPending(false);
         return;

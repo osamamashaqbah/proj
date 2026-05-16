@@ -24,6 +24,8 @@ export default async function AdminRolesPage() {
               perms: r.permissions.map((p) => p.permission.key),
             }}
             allPerms={perms.map((p) => p.key)}
+            saveLabel={t("common.save")}
+            systemLabel={t("admin.rolesPage.system")}
           />
         ))}
       </div>

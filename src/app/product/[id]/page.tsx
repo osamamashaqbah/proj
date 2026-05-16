@@ -36,19 +36,19 @@ export default async function ProductPage({ params }: { params: { id: string } }
     <div className="grid md:grid-cols-2 gap-8">
       <div>
         <div className="card">
-          <div className="aspect-[4/3] w-full overflow-hidden rounded-lg bg-bg-elevated mb-3">
+          <div className="aspect-[4/3] w-full overflow-hidden rounded-lg bg-bg-elevated mb-3 border border-neon-violet/30">
             {listing.images?.[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={listing.images[0]} alt={listing.title} className="h-full w-full object-cover" />
             ) : (
-              <div className="flex h-full w-full items-center justify-center text-silver-muted text-4xl">🎮</div>
+              <div className="flex h-full w-full items-center justify-center text-silver-muted text-5xl">🎮</div>
             )}
           </div>
           {listing.images?.length > 1 && (
             <div className="grid grid-cols-4 gap-2">
               {listing.images.slice(1, 5).map((src, i) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={i} src={src} className="h-16 w-full object-cover rounded" alt="" />
+                <img key={i} src={src} className="h-16 w-full object-cover rounded border border-neon-violet/20" alt="" />
               ))}
             </div>
           )}
@@ -63,7 +63,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
           )}
         </div>
         <h1 className="text-2xl md:text-3xl font-bold text-silver-bright">{listing.title}</h1>
-        <div className="text-purple-300 text-2xl font-semibold">
+        <div className="text-3xl font-display font-bold bg-gradient-to-r from-neon-pink to-neon-cyan bg-clip-text text-transparent">
           {formatPrice(listing.priceCents, listing.currency, locale)}
         </div>
         <div className="text-sm muted">
@@ -106,11 +106,13 @@ export default async function ProductPage({ params }: { params: { id: string } }
               buyDirect: t("product.buyDirect"),
               buyWithGuarantee: t("product.buyWithGuarantee"),
               selectGuarantee: t("product.selectGuarantee"),
+              paymentMethod: t("product.paymentMethod"),
               feeLabel: t("guarantee.feeLabel"),
               subtotal: t("orders.subtotal"),
               guaranteeFee: t("orders.guaranteeFee"),
               total: t("orders.total"),
               submit: t("marketplace.buyNow"),
+              redirecting: t("payments.checkoutPending"),
               none: t("common.no"),
             }}
             locale={locale}

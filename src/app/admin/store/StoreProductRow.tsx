@@ -3,7 +3,13 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function StoreProductRow({ p }: { p: any }) {
+export function StoreProductRow({
+  p,
+  labels,
+}: {
+  p: any;
+  labels: { active: string; inactive: string; delete: string; deleteConfirm: string };
+}) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const patch = async (data: any) => {
@@ -17,7 +23,7 @@ export function StoreProductRow({ p }: { p: any }) {
     router.refresh();
   };
   const del = async () => {
-    if (!confirm("Delete?")) return;
+    if (!confirm(labels.deleteConfirm)) return;
     setPending(true);
     await fetch(`/api/admin/store-products/${p.id}`, { method: "DELETE" });
     setPending(false);
@@ -31,10 +37,10 @@ export function StoreProductRow({ p }: { p: any }) {
       <td>{p.stock}</td>
       <td>
         <button disabled={pending} className={p.isActive ? "badge-success" : "badge-danger"} onClick={() => patch({ isActive: !p.isActive })}>
-          {p.isActive ? "Active" : "Inactive"}
+          {p.isActive ? labels.active : labels.inactive}
         </button>
       </td>
-      <td><button className="btn-danger" disabled={pending} onClick={del}>Delete</button></td>
+      <td><button className="btn-danger" disabled={pending} onClick={del}>{labels.delete}</button></td>
     </tr>
   );
 }

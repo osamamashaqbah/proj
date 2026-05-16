@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Tajawal:wght@400;500;700;900&family=Cairo:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,80 +10,334 @@
 
 html,
 body {
-  background: #0a0a0f;
-  color: #e6e8ec;
+  background: #05030d;
+  color: #f1f3f8;
   min-height: 100%;
+}
+
+html[lang="ar"] body {
+  font-family: "Tajawal", "Cairo", "Rajdhani", system-ui, sans-serif;
 }
 
 body {
   background-image:
-    radial-gradient(1200px 600px at 80% -10%, rgba(124, 58, 237, 0.18), transparent 60%),
-    radial-gradient(900px 500px at -10% 20%, rgba(168, 85, 247, 0.10), transparent 70%);
+    radial-gradient(1100px 600px at 80% -10%, rgba(255, 61, 240, 0.18), transparent 60%),
+    radial-gradient(900px 500px at -10% 30%, rgba(34, 211, 238, 0.10), transparent 70%),
+    radial-gradient(700px 400px at 50% 110%, rgba(168, 85, 247, 0.18), transparent 70%),
+    linear-gradient(rgba(168, 85, 247, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.05) 1px, transparent 1px);
+  background-size:
+    auto, auto, auto, 56px 56px, 56px 56px;
+  background-attachment: fixed, fixed, fixed, fixed, fixed;
+}
+
+/* Subtle CRT scanline overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.025) 0px,
+    rgba(255, 255, 255, 0.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 1;
+  mix-blend-mode: overlay;
+}
+
+main, header, footer {
+  position: relative;
+  z-index: 2;
 }
 
 @layer components {
+  /* Buttons */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-purple-500/60 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-semibold tracking-wide uppercase transition focus:outline-none focus:ring-2 focus:ring-neon-violet/60 disabled:opacity-50 disabled:cursor-not-allowed;
+    font-family: "Orbitron", "Rajdhani", system-ui, sans-serif;
+    letter-spacing: 0.06em;
   }
+  html[lang="ar"] .btn {
+    font-family: "Tajawal", "Cairo", system-ui, sans-serif;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
   .btn-primary {
-    @apply btn bg-purple-gradient text-white shadow-glow-soft hover:shadow-glow;
+    @apply btn text-white relative;
+    background: linear-gradient(135deg, #ff2d8e 0%, #a855f7 50%, #7c3aed 100%);
+    box-shadow:
+      0 0 0 1px rgba(255, 61, 240, 0.4),
+      0 0 12px rgba(168, 85, 247, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
+  .btn-primary:hover {
+    box-shadow:
+      0 0 0 1px rgba(255, 61, 240, 0.7),
+      0 0 24px rgba(255, 61, 240, 0.7),
+      0 0 48px rgba(168, 85, 247, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    filter: brightness(1.1);
+  }
+
   .btn-secondary {
-    @apply btn bg-bg-elevated text-silver-bright border border-purple-700/30 hover:border-purple-500/60;
+    @apply btn text-neon-violet border border-neon-violet/50 bg-bg-card/60;
+    box-shadow:
+      inset 0 0 0 1px rgba(168, 85, 247, 0.3),
+      0 0 8px rgba(168, 85, 247, 0.2);
   }
+  .btn-secondary:hover {
+    @apply text-white border-neon-pink/70;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 61, 240, 0.5),
+      0 0 16px rgba(255, 61, 240, 0.4);
+  }
+
+  .btn-cyan {
+    @apply btn text-neon-cyan border border-neon-cyan/60 bg-bg-card/60;
+    box-shadow:
+      inset 0 0 0 1px rgba(34, 211, 238, 0.3),
+      0 0 8px rgba(34, 211, 238, 0.25);
+  }
+  .btn-cyan:hover {
+    box-shadow: 0 0 16px rgba(34, 211, 238, 0.6);
+    filter: brightness(1.1);
+  }
+
   .btn-ghost {
-    @apply btn text-silver hover:text-white hover:bg-bg-elevated/60;
+    @apply btn text-silver hover:text-white hover:bg-bg-elevated/60 border border-transparent hover:border-neon-violet/30;
   }
+
   .btn-danger {
-    @apply btn bg-red-600 text-white hover:bg-red-500;
+    @apply btn text-white;
+    background: linear-gradient(135deg, #ef4444 0%, #ff2d8e 100%);
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
   }
+  .btn-danger:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 0 24px rgba(239, 68, 68, 0.6);
+  }
+
+  /* Inputs */
   .input {
-    @apply w-full rounded-md bg-bg-soft border border-purple-700/30 px-3 py-2 text-silver-bright placeholder:text-silver-muted focus:outline-none focus:ring-2 focus:ring-purple-500/60 focus:border-purple-500/60;
+    @apply w-full rounded-md bg-bg-soft/80 border border-neon-violet/30 px-3 py-2 text-silver-bright placeholder:text-silver-muted focus:outline-none focus:ring-2 focus:ring-neon-pink/50 focus:border-neon-pink/60 transition;
+    font-family: "Rajdhani", system-ui, sans-serif;
   }
+  html[lang="ar"] .input {
+    font-family: "Tajawal", "Cairo", system-ui, sans-serif;
+  }
+
+  /* Cards */
   .card {
-    @apply rounded-xl border border-purple-800/30 bg-bg-card bg-card-gradient p-4 shadow-glow-soft;
+    @apply rounded-xl border border-neon-violet/30 bg-bg-card/90 bg-card-gradient p-4 backdrop-blur-sm relative overflow-hidden;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 0 0 1px rgba(168, 85, 247, 0.08),
+      0 0 20px rgba(168, 85, 247, 0.08);
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 61, 240, 0.06), transparent 30%);
+    pointer-events: none;
   }
   .card-hover {
-    @apply transition hover:border-purple-500/60 hover:shadow-glow;
+    @apply transition;
   }
+  .card-hover:hover {
+    border-color: rgba(255, 61, 240, 0.6);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 0 0 1px rgba(255, 61, 240, 0.4),
+      0 0 28px rgba(255, 61, 240, 0.25),
+      0 0 60px rgba(168, 85, 247, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .card-arcade {
+    @apply card;
+    background:
+      linear-gradient(180deg, rgba(168, 85, 247, 0.08) 0%, rgba(34, 211, 238, 0.04) 100%),
+      #0f0a24;
+  }
+
+  /* Badges */
   .badge {
-    @apply inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium;
+    @apply inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider;
+    font-family: "Orbitron", system-ui, sans-serif;
   }
+  html[lang="ar"] .badge {
+    font-family: "Tajawal", "Cairo", system-ui, sans-serif;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
   .badge-purple {
-    @apply badge border-purple-500/40 bg-purple-500/10 text-purple-200;
+    @apply badge text-neon-violet;
+    border-color: rgba(168, 85, 247, 0.5);
+    background: rgba(168, 85, 247, 0.15);
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.25);
+  }
+  .badge-pink {
+    @apply badge text-neon-pink;
+    border-color: rgba(255, 45, 142, 0.5);
+    background: rgba(255, 45, 142, 0.12);
+    box-shadow: 0 0 10px rgba(255, 45, 142, 0.3);
+  }
+  .badge-cyan {
+    @apply badge text-neon-cyan;
+    border-color: rgba(34, 211, 238, 0.5);
+    background: rgba(34, 211, 238, 0.12);
+    box-shadow: 0 0 10px rgba(34, 211, 238, 0.25);
   }
   .badge-silver {
-    @apply badge border-silver/40 bg-silver/10 text-silver-bright;
+    @apply badge text-silver-bright;
+    border-color: rgba(207, 211, 220, 0.4);
+    background: rgba(207, 211, 220, 0.08);
   }
   .badge-warning {
-    @apply badge border-yellow-500/40 bg-yellow-500/10 text-yellow-200;
+    @apply badge text-yellow-200;
+    border-color: rgba(250, 204, 21, 0.5);
+    background: rgba(250, 204, 21, 0.10);
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.25);
   }
   .badge-success {
-    @apply badge border-emerald-500/40 bg-emerald-500/10 text-emerald-200;
+    @apply badge text-emerald-300;
+    border-color: rgba(52, 211, 153, 0.5);
+    background: rgba(52, 211, 153, 0.10);
+    box-shadow: 0 0 10px rgba(52, 211, 153, 0.25);
   }
   .badge-danger {
-    @apply badge border-red-500/40 bg-red-500/10 text-red-200;
+    @apply badge text-red-300;
+    border-color: rgba(239, 68, 68, 0.5);
+    background: rgba(239, 68, 68, 0.10);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.30);
   }
   .badge-neutral {
-    @apply badge border-zinc-500/30 bg-zinc-500/10 text-zinc-200;
+    @apply badge text-zinc-200;
+    border-color: rgba(113, 113, 122, 0.4);
+    background: rgba(113, 113, 122, 0.10);
   }
+
+  /* Headings & text utilities */
   .section-title {
-    @apply text-xl md:text-2xl font-semibold text-silver-bright tracking-tight;
+    @apply text-xl md:text-2xl font-bold tracking-tight text-silver-bright;
+    font-family: "Orbitron", "Rajdhani", system-ui, sans-serif;
+    letter-spacing: 0.04em;
   }
+  html[lang="ar"] .section-title {
+    font-family: "Tajawal", "Cairo", system-ui, sans-serif;
+    letter-spacing: normal;
+  }
+
+  .neon-title {
+    @apply font-display font-bold;
+    background: linear-gradient(135deg, #ff2d8e 0%, #ff3df0 30%, #a855f7 60%, #22d3ee 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 20px rgba(255, 61, 240, 0.4);
+    letter-spacing: 0.05em;
+  }
+  html[lang="ar"] .neon-title {
+    font-family: "Tajawal", "Cairo", system-ui, sans-serif;
+    font-weight: 900;
+    letter-spacing: normal;
+  }
+
+  .arcade-title {
+    font-family: "Press Start 2P", monospace;
+    color: #ff3df0;
+    text-shadow:
+      0 0 8px #ff2d8e,
+      0 0 16px #a855f7,
+      0 0 32px #a855f7;
+    letter-spacing: 0.04em;
+  }
+  html[lang="ar"] .arcade-title {
+    font-family: "Tajawal", "Cairo", system-ui, sans-serif;
+    font-weight: 900;
+    letter-spacing: normal;
+  }
+
   .muted {
     @apply text-silver-muted;
   }
+
   .link {
-    @apply text-purple-300 hover:text-purple-200 underline underline-offset-4;
+    @apply text-neon-cyan hover:text-neon-pink underline underline-offset-4 transition;
   }
+
+  /* Tables */
   .table {
     @apply w-full text-sm;
   }
   .table th {
-    @apply text-left text-silver-muted font-medium border-b border-purple-800/30 px-3 py-2;
+    @apply text-start text-silver-muted font-semibold border-b border-neon-violet/30 px-3 py-2 uppercase tracking-wider text-xs;
+    font-family: "Orbitron", system-ui, sans-serif;
+  }
+  html[lang="ar"] .table th {
+    font-family: "Tajawal", "Cairo", system-ui, sans-serif;
+    text-transform: none;
+    letter-spacing: normal;
   }
   .table td {
-    @apply border-b border-purple-800/20 px-3 py-2 align-top;
+    @apply border-b border-neon-violet/15 px-3 py-2 align-middle;
+  }
+  .table tbody tr {
+    @apply transition;
+  }
+  .table tbody tr:hover {
+    background: rgba(168, 85, 247, 0.06);
+  }
+
+  /* Arcade-style nav link */
+  .nav-link {
+    @apply relative px-2 py-1 rounded text-silver hover:text-white transition;
+    font-family: "Orbitron", "Rajdhani", system-ui, sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  html[lang="ar"] .nav-link {
+    font-family: "Tajawal", "Cairo", system-ui, sans-serif;
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 0.9rem;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ff2d8e, #a855f7, #22d3ee);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.25s ease;
+    box-shadow: 0 0 8px #ff2d8e;
+  }
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* Hero arcade frame */
+  .arcade-frame {
+    position: relative;
+    border-radius: 16px;
+    padding: 2px;
+    background: linear-gradient(135deg, #ff2d8e, #a855f7, #22d3ee, #ff2d8e);
+    background-size: 300% 300%;
+    animation: glow-spin 12s linear infinite;
+  }
+  .arcade-frame > div {
+    border-radius: 14px;
+    background: #0a0719;
   }
 }
 
@@ -90,4 +346,31 @@ body {
 }
 [dir="ltr"] .rtl-only {
   display: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0719;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #a855f7, #ff2d8e);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ff2d8e, #22d3ee);
+}
+
+/* Focus ring */
+*:focus-visible {
+  outline: none;
+}
+
+/* Selection */
+::selection {
+  background: rgba(255, 61, 240, 0.4);
+  color: white;
 }

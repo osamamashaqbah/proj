@@ -13,11 +13,25 @@ export async function POST(req: Request) {
     const me = await getCurrentUser();
     requirePermission(me, "ticket.create");
     const body = Body.parse(await req.json());
+
+    const subject = sanitizeText(body.subject, 200);
+    const initialBody = sanitizeText(body.body, 5000);
+
     const t = await prisma.supportTicket.create({
       data: {
         authorId: me!.id,
-        subject: sanitizeText(body.subject, 200),
-        body: sanitizeText(body.body, 5000),
+        subject,
+        body: initialBody,
+        // Auto-create initial message so the conversation thread is consistent
+        messages: {
+          create: [
+            {
+              authorId: me!.id,
+              body: initialBody,
+              isStaff: false,
+            },
+          ],
+        },
       },
     });
     return ok({ id: t.id });

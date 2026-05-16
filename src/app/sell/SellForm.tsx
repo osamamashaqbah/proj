@@ -20,6 +20,7 @@ export function SellForm({
     successBody: string;
     required: string;
     riskWarning: string;
+    another: string;
   };
 }) {
   const [title, setTitle] = useState("");
@@ -70,7 +71,7 @@ export function SellForm({
         <h2 className="text-silver-bright font-semibold">{t.successTitle}</h2>
         <p className="muted mt-1">{t.successBody}</p>
         <button className="btn-secondary mt-4" onClick={() => setSuccess(false)}>
-          + Another listing
+          {t.another}
         </button>
       </div>
     );
@@ -80,20 +81,11 @@ export function SellForm({
     <form className="card space-y-4" onSubmit={onSubmit}>
       <div>
         <label className="text-sm muted block mb-1">{t.title}</label>
-        <input
-          required
-          className="input"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        <input required className="input" value={title} onChange={(e) => setTitle(e.target.value)} />
       </div>
       <div>
         <label className="text-sm muted block mb-1">{t.category}</label>
-        <select
-          className="input"
-          value={categoryId}
-          onChange={(e) => setCategoryId(e.target.value)}
-        >
+        <select className="input" value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
           {categories.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
@@ -106,40 +98,18 @@ export function SellForm({
       </div>
       <div>
         <label className="text-sm muted block mb-1">{t.price}</label>
-        <input
-          type="number"
-          min="0"
-          step="0.01"
-          required
-          className="input"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
+        <input type="number" min="0" step="0.01" required className="input" value={price} onChange={(e) => setPrice(e.target.value)} />
       </div>
       <div>
         <label className="text-sm muted block mb-1">{t.description}</label>
-        <textarea
-          rows={6}
-          required
-          className="input"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+        <textarea rows={6} required className="input" value={description} onChange={(e) => setDescription(e.target.value)} />
       </div>
       <div>
         <label className="text-sm muted block mb-1">{t.images}</label>
-        <textarea
-          rows={3}
-          className="input"
-          value={images}
-          onChange={(e) => setImages(e.target.value)}
-          placeholder="https://...\nhttps://..."
-        />
+        <textarea rows={3} className="input" value={images} onChange={(e) => setImages(e.target.value)} placeholder="https://..." />
       </div>
       {error && <div className="text-red-300 text-sm">{error}</div>}
-      <button disabled={submitting} className="btn-primary w-full">
-        {submitting ? "..." : t.submit}
-      </button>
+      <button disabled={submitting} className="btn-primary w-full">{submitting ? "..." : t.submit}</button>
     </form>
   );
 }

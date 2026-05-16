@@ -3,7 +3,13 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function CategoryRow({ c }: { c: any }) {
+export function CategoryRow({
+  c,
+  labels,
+}: {
+  c: any;
+  labels: { yes: string; no: string; enabled: string; disabled: string };
+}) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const patch = async (data: any) => {
@@ -18,13 +24,13 @@ export function CategoryRow({ c }: { c: any }) {
   };
   return (
     <tr>
-      <td>{c.slug}</td>
+      <td className="font-mono text-xs text-silver-muted">{c.slug}</td>
       <td>{c.nameEn}</td>
       <td>{c.nameAr}</td>
       <td><span className="badge-purple">{c.kind}</span></td>
       <td>
         <button className={c.riskWarning ? "badge-warning" : "badge-neutral"} onClick={() => patch({ riskWarning: !c.riskWarning })}>
-          {c.riskWarning ? "Yes" : "No"}
+          {c.riskWarning ? labels.yes : labels.no}
         </button>
       </td>
       <td>
@@ -33,7 +39,7 @@ export function CategoryRow({ c }: { c: any }) {
           className={c.enabled ? "badge-success" : "badge-danger"}
           onClick={() => patch({ enabled: !c.enabled })}
         >
-          {c.enabled ? "Enabled" : "Disabled"}
+          {c.enabled ? labels.enabled : labels.disabled}
         </button>
       </td>
       <td>—</td>

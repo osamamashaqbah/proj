@@ -6,7 +6,13 @@ export default function ForgotPage() {
   return (
     <div className="max-w-md mx-auto space-y-4">
       <h1 className="section-title">{t("auth.resetTitle")}</h1>
-      <ForgotForm labels={{ email: t("auth.email"), submit: t("auth.sendReset") }} />
+      <ForgotForm
+        labels={{
+          email: t("auth.email"),
+          submit: t("auth.sendReset"),
+          sentMessage: t("auth.forgotSent"),
+        }}
+      />
     </div>
   );
 }

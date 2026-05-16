@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 
-export function ResetForm({ token, labels }: { token: string; labels: { password: string; submit: string } }) {
+export function ResetForm({
+  token,
+  labels,
+}: {
+  token: string;
+  labels: { password: string; submit: string; doneMessage: string };
+}) {
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
   const [done, setDone] = useState(false);
@@ -26,7 +32,7 @@ export function ResetForm({ token, labels }: { token: string; labels: { password
     setDone(true);
   };
 
-  if (done) return <div className="card">Password reset. You can log in now.</div>;
+  if (done) return <div className="card">{labels.doneMessage}</div>;
 
   return (
     <form className="card space-y-3" onSubmit={onSubmit}>

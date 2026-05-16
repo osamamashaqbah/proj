@@ -9,6 +9,7 @@ const SELL_PREFIX = "/sell";
 const PROFILE_PREFIX = "/profile";
 const ORDERS_PREFIX = "/orders";
 const MY_LISTINGS_PREFIX = "/my-listings";
+const SUPPORT_PREFIX = "/support";
 
 const PROTECTED_PREFIXES = [
   ADMIN_PREFIX,
@@ -18,6 +19,7 @@ const PROTECTED_PREFIXES = [
   PROFILE_PREFIX,
   ORDERS_PREFIX,
   MY_LISTINGS_PREFIX,
+  SUPPORT_PREFIX,
 ];
 
 export async function middleware(req: NextRequest) {
@@ -60,5 +62,6 @@ export const config = {
     "/profile/:path*",
     "/orders/:path*",
     "/my-listings/:path*",
+    "/support/:path*",
   ],
 };
